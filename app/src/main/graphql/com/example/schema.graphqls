@@ -1,0 +1,2143 @@
+type Query {
+  me: User!
+
+  getAllUsers: [User!]!
+
+  getAllUsersExcept(ids: [Float!]!): [User!]!
+
+  getAllUsersWithDetail(pageSize: Float, name: String, locationIds: [Float!], strategyIds: [Float!], departmentIds: [Float!], titleIds: [Float!], evaluatorIds: [Float!], evaluationTypeIds: [Float!], isActive: Boolean, sort: UserSortField, page: Float!): UserPagination!
+
+  getOneUser(id: Float!): User!
+
+  """
+  get List of action on Admin mode
+  """
+  getListUserAction(name: String, locationIds: [Float!], strategyIds: [Float!], departmentIds: [Float!], titleIds: [Float!], evaluatorIds: [Float!], evaluationTypeIds: [Float!], isActive: Boolean, sort: UserSortField, cycleId: Int, locStatus: [String!], saStatus: Boolean, missingEvaluationsIds: [Int!], psStatus: Boolean, actionSort: UserActionSortField, page: Float!): UserActionPagination!
+
+  getResetForms(filter: UserActionFilter): ResetForms!
+
+  """
+  Get All CycleContributors
+  """
+  getAllCycleContributorsWithPagination(pageSize: Float, page: Float!): CycleContributorPagination!
+
+  getOneCycleContributor(id: Float!): CycleContributor!
+
+  """
+  get contributor on My team s form
+  """
+  getLOCsMyTeamForm(name: String, locationIds: [Float!], strategyIds: [Float!], departmentIds: [Float!], titleIds: [Float!], evaluatorIds: [Float!], evaluationTypeIds: [Float!], isActive: Boolean, sort: UserSortField, cycleId: Float, statusLOC: [String!], page: Float!): UserPagination!
+
+  """
+  get contributor on Admin mode
+  """
+  getLOCsAdminMode(name: String, locationIds: [Float!], strategyIds: [Float!], departmentIds: [Float!], titleIds: [Float!], evaluatorIds: [Float!], evaluationTypeIds: [Float!], isActive: Boolean, sort: UserSortField, cycleId: Float, statusLOC: [String!], page: Float!): UserPagination!
+
+  """
+  Get contributors of a given user
+  """
+  getUserContributors(userId: Float): [CycleContributorUser!]!
+
+  """
+  Get contributors of a given user
+  """
+  listSubmit(filter: UserActionFilter!): CycleContributorFilter!
+
+  getAllCycleContributorUsersWithPagination(pageSize: Float, page: Float!): CycleContributorUserPagination!
+
+  getOneCycleContributorUser(id: Float!): CycleContributorUser!
+
+  """
+  Get contributors on Admin mode -> View -> Full or Evaluation mode -> My Form -> My list of contributor
+  """
+  getContributorsOfEvaluatee(isEvaluator: Boolean!, name: String, locationIds: [Float!], strategyIds: [Float!], departmentIds: [Float!], titleIds: [Float!], evaluatorIds: [Float!], evaluationTypeIds: [Float!], isActive: Boolean, sort: UserSortField, pageSize: Float, page: Float!, userId: Float!): CycleContributorUserPagination!
+
+  getLastYearContributors(name: String, locationIds: [Float!], strategyIds: [Float!], departmentIds: [Float!], titleIds: [Float!], evaluatorIds: [Float!], evaluationTypeIds: [Float!], isActive: Boolean, sort: UserSortField, pageSize: Float, page: Float!, userId: Float!): CycleContributorUserPagination!
+
+  getAllCycle: [Cycle!]!
+
+  getAllCyclesWithPagination(sort: SortField, pageSize: Float, page: Float!): CyclePagination!
+
+  getOneCycle(id: Float!): Cycle!
+
+  getPreCycle: Cycle
+
+  """
+  Get Self-Assessments on Admin Dashboard
+  """
+  selfAssessments(strategyId: Float, departmentIds: [Float!]): OverviewEvaluation!
+
+  """
+  Get of Performance Evaluation on Admin Dashboard
+  """
+  performanceEvaluation(strategyId: Float, departmentIds: [Float!]): OverviewEvaluation!
+
+  """
+  Get List of Contributors on Admin Dashboard
+  """
+  listContributors(strategyId: Float, departmentIds: [Float!]): OverviewEvaluation!
+
+  """
+  Get Overall Progress on Admin Dashboard
+  """
+  overallProgress(strategyId: Float, departmentIds: [Float!]): OverviewEvaluation!
+
+  """
+  Get list of performance evaluations on Admin Dashboard
+  """
+  getListPerformanceEvaluations: [EvaluationSummary!]!
+
+  """
+  Get all pending LOC approvals on Admin Dashboard
+  """
+  getPendingLOCApproval: [CycleContributor!]!
+
+  """
+  Get all reminders on Admin Dashboard
+  """
+  getAllNotificationLogs(userId: Float): [NotificationLog!]!
+
+  """
+  Get highest ratings on Admin Dashboard
+  """
+  getHighestRating: [HighestRatingUsers!]!
+
+  """
+  Get my contributors on Evaluation
+  """
+  myContributorStatus: CycleContributor
+
+  """
+  Get my self assessment on Evaluation Dashboard
+  """
+  mySelfAssessment: UserEvaluationStatus!
+
+  """
+  Get self assessment for evaluatees on Evaluation Dashboard
+  """
+  getSelfAssessmentForEvaluatees: EvaluationDetails!
+
+  """
+  Get list of performance evaluations on Evaluation
+  """
+  getListOfPerformanceEvaluations: EvaluationDetails!
+
+  """
+  Get distribution of your ratings and Distribution of your Saved & Submitted Ratings on evaluatees for this cycle on Evaluation
+  """
+  getDistributionRatings(evaluationType: Float, question: Float): DistributionRatingDetails!
+
+  """
+  Get list of contributors awaiting approval on Evaluation
+  """
+  getLOCsAwaitingApproval: LOCsDetail!
+
+  """
+  Get list of performance summaries on Evaluation
+  """
+  getListOfPerformanceSummary: [PerformanceSummaryDetails!]!
+
+  getAllDepartments(departmentId: Float, strategyId: Float): [Department!]!
+
+  getOneDepartment(id: Float!): Department
+
+  getAllDepartmentsWithPagination(strategyId: Float, sort: DepartmentSortField, pageSize: Float, page: Float!): DepartmentPagination!
+
+  getOneEvaluation(id: Float!): Evaluation!
+
+  """
+  Get evaluation in View on Admin mode
+  """
+  getEvaluationInfo(evaluateeId: Float!, contributorId: Float, cycleId: Float, isSelfAssessment: Boolean): [Evaluation!]
+
+  """
+  Get my evaluations in Evaluation Mode -> My Forms -> My Evaluations
+  """
+  getMyEvaluations(sort: UserSortField, pageSize: Float, page: Float!): EvaluationsPagination!
+
+  getMySelfAssessment: Evaluation!
+
+  """
+  Show Open Evalution For User
+  """
+  getOpenEvaluation(evaluateeId: Float!): Evaluation!
+
+  """
+  Get Evaluation details of the given User ID 
+  """
+  getUserEvaluation(evaluationId: Float, contributorId: Float, cycleId: Float, isSelfAssessment: Boolean, evaluateeId: Float, isEvaluationMode: Boolean = false): Evaluation!
+
+  getAllQuestionsWithPagination(pageSize: Float, page: Float!): QuestionPagination!
+
+  getOneEvaluationTypeQuestion(id: Float!): EvaluationTypeQuestion!
+
+  getQuestionsWithSpecificType(evaluationType: Float!): [EvaluationTypeQuestion!]!
+
+  getAllEvaluationTypes: [EvaluationType!]!
+
+  getAllDetailEvaluationTypes(sort: SortField, pageSize: Float, keyword: String, page: Float!): TypePagination!
+
+  getOneEvaluationType(id: Float!): EvaluationType!
+
+  getAllLocations: [Location!]!
+
+  getAllLocationsWithPagination(sort: LocationSortField, pageSize: Float, page: Float!): LocationPagination!
+
+  getOneLocation(id: Float!): Location!
+
+  getUsersInReminder(filter: UserActionFilter!, recipient: String!): [User!]!
+
+  getAllNotificationScheduleds: [NotificationScheduled!]!
+
+  getOneNotificationScheduled(id: Float!): NotificationScheduled!
+
+  getAllNotificationShorts: [NotificationShort!]!
+
+  getOneNotificationShort(id: Float!): NotificationShort!
+
+  getAllNotificationTemplates: [NotificationTemplate!]!
+
+  getOneNotificationTemplate(id: Float!): NotificationTemplate!
+
+  getAllPerformanceSummarys: [PerformanceSummary!]!
+
+  getOnePerformanceSummary(id: Float!): PerformanceSummary!
+
+  """
+  Evaluation mode -> Report -> Performance summary
+  """
+  getReportPerformanceSummary(name: String, locationIds: [Float!], strategyIds: [Float!], departmentIds: [Float!], titleIds: [Float!], evaluatorIds: [Float!], evaluationTypeIds: [Float!], isActive: Boolean, sort: UserSortField): [PerformanceSummaryDetails!]!
+
+  """
+  Evaluation mode -> Report -> Performance summary -> Performance summary detail
+  """
+  getPerformanceSummaryDetails(cycleId: Float, userId: Float!): PerformanceSummaryUserDetails
+
+  getAllReminderTemplates: [ReminderTemplate!]!
+
+  getAllReminderTemplateDetail(sort: SortFieldTemplate, pageSize: Float, page: Float!): TemplatePagination!
+
+  getOneReminderTemplate(id: Float!): ReminderTemplate!
+
+  getAllRoles: [Role!]!
+
+  getOneRole(id: Float!): Role!
+
+  getAllSettings: [Setting!]!
+
+  getOneSetting(id: Float!): Setting!
+
+  getAllStrategies: [Strategy!]!
+
+  getAllStrategiesWithPagination(sort: StrategySortField, pageSize: Float, page: Float!): StrategyPagination!
+
+  getOneStrategy(id: Float!): Strategy!
+
+  getAllTitles: [Title!]!
+
+  getAllTitlesWithPagination(sort: TitleSortField, pageSize: Float, page: Float!): TitlePagination!
+
+  getOneTitle(id: Float!): Title!
+
+  getSelfAssessmentList(sort: SortUserEvaluation, pageSize: Float, page: Float!): UserEvaluationPagination!
+
+  """
+  Get All Users For Open Evaluation
+  """
+  getUserForOpenEvaluation(name: String): [User!]!
+
+  """
+  Get user profile on All Users page
+  """
+  getUserProfile(userId: Float!): User!
+
+  getAllOverallPerformanceSummaries: [OverallPerformanceSummary!]!
+
+  getOneOverallPerformanceSummary(id: Float!): OverallPerformanceSummary!
+
+  exportRankingSummary(filter: UserActionFilter!, payload: PayLoad!): ExportOutPut!
+
+  getLOCApproval(filter: UserActionFilter!, payload: PayLoad!): ExportOutPut!
+
+  exportAllUsers: ExportOutPut!
+
+  exportDetailUsersExcel(filter: UserActionFilter!): ExportOutPut!
+
+  exportOverallPerformanceSummary(filter: UserActionFilter!, payload: PayLoad!): ExportOutPut!
+
+  shareOverallPerformanceSummary(filter: UserActionFilter!, payload: PayLoad!): ShareOpsOutPut!
+
+  exportMissingEvaluations(filter: UserActionFilter!, payload: PayLoad!): ExportOutPut!
+
+  exportSAs(filter: UserActionFilter, payload: PayLoad!): ExportOutPut!
+
+  exportMySelfAssessment: ExportOutPut!
+
+  exportContributorsPerPerson(filter: UserActionFilter!): ExportOutPut!
+
+  exportPerformanceSummary(filter: UserActionFilter!, payload: PerformanceSummaryPayload!): ExportOutPut!
+
+  exportRatingSummary(filter: UserActionFilter!, payload: PayLoad!): ExportOutPut!
+
+  exportMyEvaluations: ExportOutPut!
+}
+
+type User {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  lastName: String!
+
+  firstName: String!
+
+  name: String!
+
+  email: String!
+
+  startDate: DateTime!
+
+  isInactive: Boolean
+
+  lastLogin: DateTime
+
+  roleCountryCode: String
+
+  roleLocationId: Float
+
+  image: String
+
+  roleCityCode: String
+
+  lastPromotionCycleId: Float
+
+  showPreviousComment: Float
+
+  isLockedSystem: Boolean
+
+  performanceSummary: [PerformanceSummary!]
+
+  userAdminCountry: [UserAdminCountry!]!
+
+  userAdminLocation: [UserAdminLocation!]!
+
+  evaluationsOnMe: [Evaluation!]
+
+  evaluationsByMe: [Evaluation!]
+
+  overallPerformanceSummary: [OverallPerformanceSummary!]
+
+  department: Department
+
+  evaluationType: EvaluationType
+
+  location: Location
+
+  strategy: Strategy
+
+  title: Title
+
+  previousTitle: Title
+
+  evaluator: User
+
+  cycleContributors: [CycleContributor!]!
+
+  permissionsExtraUsers: [UsersExtra!]
+
+  permissionsLimitedUsers: [UsersLimited!]
+
+  roles: [Role!]
+
+  cycleId: Float
+
+  isEvaluator: Boolean!
+
+  completedPSsByUser: [PerformanceSummary!]!
+
+  """
+  Get list of contributors of User
+  """
+  listOfContributors: CycleContributor
+
+  """
+  Get list of evaluatee in User profile
+  """
+  isEvaluatorFor: [User!]!
+
+  """
+  Get evaluations of User
+  """
+  evaluations: [EvaluationWithDuration!]!
+
+  """
+  Get self assessment of User
+  """
+  selfAssessment: EvaluationWithDuration
+
+  """
+  Get open evaluations of User
+  """
+  openEvaluations: [Evaluation!]!
+
+  """
+  Get reminders of User
+  """
+  reminders: [NotificationLog!]!
+}
+
+"""
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+"""
+scalar Float
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+"""
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+"""
+scalar String
+
+"""
+The `Boolean` scalar type represents `true` or `false`.
+"""
+scalar Boolean
+
+type PerformanceSummary {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  score: Float
+
+  feedback: String
+
+  isComplete: Boolean
+
+  status: String
+
+  opsStatus: String
+
+  cycle: Cycle!
+
+  user: User!
+}
+
+type Cycle {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  isActive: Boolean!
+
+  name: String!
+}
+
+type UserAdminCountry {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  countryCode: String!
+}
+
+type UserAdminLocation {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  location: Location!
+}
+
+type Location {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  name: String!
+
+  countryCode: String
+}
+
+type Evaluation {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  name: String!
+
+  projectDetails: String!
+
+  isComplete: Boolean
+
+  isSelfAssessment: Boolean
+
+  optOut: Boolean!
+
+  optOutReason: String
+
+  isOpenEvaluation: Boolean!
+
+  status: String
+
+  cycle: Cycle!
+
+  evaluationType: EvaluationType!
+
+  evaluator: User
+
+  evaluatee: User
+
+  contributor: User
+
+  evaluationAnswers: [EvaluationAnswer!]
+
+  evaluationTimeLogs: [EvaluationTimeLog!]!
+}
+
+type EvaluationType {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  name: String!
+
+  key: String
+
+  evaluationTypeQuestions: [EvaluationTypeQuestion!]!
+}
+
+type EvaluationTypeQuestion {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  title: String!
+
+  subtitle: String!
+
+  text: String!
+
+  isOpenQuestion: Boolean
+
+  isRequired: Boolean
+
+  isNADisabled: Boolean!
+
+  isSelfAssessment: Boolean
+
+  isEvaluation: Boolean
+
+  priority: Float
+
+  isNoExposureComment: Boolean
+
+  evaluationType: EvaluationType!
+
+  evaluationTypeId: Float!
+
+  evaluationAnswers: [EvaluationAnswer!]!
+}
+
+type EvaluationAnswer {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  feedback: String
+
+  score: Float
+
+  priority: Float
+
+  evaluation: Evaluation!
+
+  evaluationTypeQuestion: EvaluationTypeQuestion
+}
+
+type EvaluationTimeLog {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  duration: Float
+}
+
+type OverallPerformanceSummary {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  status: String
+
+  isShare: Boolean
+
+  sharedDate: DateTime
+
+  cycle: Cycle!
+
+  cycleId: Float!
+
+  user: User!
+
+  userId: Float!
+
+  overallPerformanceSummaryAnswers: [OverallPerformanceSummaryAnswer!]!
+}
+
+type OverallPerformanceSummaryAnswer {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  feedback: String
+
+  priority: Float
+
+  evaluationTypeQuestion: EvaluationTypeQuestion
+}
+
+type Department {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  name: String!
+
+  deadlineLOC: DateTime
+
+  deadlineConfirmLOC: DateTime
+
+  deadlineSelfAssessment: DateTime
+
+  deadlinePerformanceEvaluation: DateTime
+
+  showPreviousComment: Boolean
+
+  lockDate: DateTime
+
+  strategy: Strategy
+}
+
+type Strategy {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  name: String!
+}
+
+type Title {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  name: String!
+
+  isMDOrAbove: Boolean
+}
+
+type CycleContributor {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  status: String!
+
+  evaluator: User!
+
+  evaluatorId: Float
+
+  cycleId: Float
+
+  user: User!
+
+  userId: Float
+
+  cycleContributorsUser: [CycleContributorUser!]!
+}
+
+type CycleContributorUser {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  projectDetails: String!
+
+  cycleContributor: CycleContributor!
+
+  user: User!
+}
+
+type UsersExtra {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  user: User!
+
+  extra: User!
+}
+
+type UsersLimited {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  user: User!
+
+  limited: User
+}
+
+type Role {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  name: String!
+}
+
+type EvaluationWithDuration {
+  evaluation: Evaluation
+
+  duration: Float!
+}
+
+type NotificationLog {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  isTestEmail: Boolean!
+
+  key: String!
+
+  fromEmail: String!
+
+  fromName: String!
+
+  toEmail: String!
+
+  toName: String!
+
+  subject: String!
+
+  content: String!
+}
+
+type UserPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [User!]!
+}
+
+interface Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+}
+
+input UserSortField {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type UserActionPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [UserActionData!]!
+}
+
+type UserActionData {
+  user: User!
+
+  listOfContributors: [CycleContributor!]
+
+  selfAssessment: Evaluation
+
+  evaluationsFor: EvaluationsDetail
+
+  evaluationsBy: EvaluationsDetail
+
+  performanceSummary: [PerformanceSummary!]
+
+  overallPerformanceSummary: [OverallPerformanceSummary!]
+}
+
+type EvaluationsDetail {
+  evaluations: [Evaluation!]!
+
+  percentComplete: Float!
+}
+
+"""
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+"""
+scalar Int
+
+input UserActionSortField {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type ResetForms {
+  total: Float!
+
+  data: [User!]!
+}
+
+input UserActionFilter {
+  userIds: [Int!]!
+
+  isSelectAll: Boolean!
+
+  name: String
+
+  locationIds: [Float!]
+
+  strategyIds: [Float!]
+
+  departmentIds: [Float!]
+
+  titleIds: [Float!]
+
+  evaluatorIds: [Float!]
+
+  evaluationTypeIds: [Float!]
+
+  isActive: Boolean
+
+  sort: UserSortField
+
+  cycleId: Int
+
+  locStatus: [String!]
+
+  saStatus: Boolean
+
+  missingEvaluationsIds: [Int!]
+
+  psStatus: Boolean
+
+  actionSort: UserActionSortField
+}
+
+type CycleContributorPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [CycleContributor!]!
+}
+
+type CycleContributorFilter {
+  listSubmitted: [CycleContributor!]!
+
+  listUnSubmitted: [CycleContributor!]!
+}
+
+type CycleContributorUserPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [CycleContributorUser!]!
+}
+
+type CyclePagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [Cycle!]!
+}
+
+input SortField {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type OverviewEvaluation {
+  percentComplete: Float!
+
+  complete: Float!
+
+  overall: Float!
+}
+
+type EvaluationSummary {
+  completedPercentage: Float!
+
+  completePerformance: Float!
+
+  totalPerformance: Float!
+
+  isComplete: Boolean!
+
+  user: User!
+}
+
+type HighestRatingUsers {
+  user: User!
+
+  averageScore: Float!
+
+  percentageFourOrGreater: Float!
+}
+
+type UserEvaluationStatus {
+  evaluationId: Float
+
+  evaluatee: User
+
+  evaluationStatus: String
+}
+
+type EvaluationDetails {
+  percentComplete: Float!
+
+  complete: Float!
+
+  overall: Float!
+
+  evaluationStatus: [UserEvaluationStatus!]!
+}
+
+type DistributionRatingDetails {
+  ratings: [Rating!]!
+
+  mean: Float!
+
+  stdDev: Float!
+
+  total: Float!
+}
+
+type Rating {
+  score: Float
+
+  entries: Float!
+
+  normalize: Float
+
+  percentage: Float!
+}
+
+type LOCsDetail {
+  users: [User!]!
+
+  percentComplete: Float!
+
+  total: Float!
+
+  complete: Float!
+}
+
+type PerformanceSummaryDetails {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  score: Float
+
+  feedback: String
+
+  isComplete: Boolean
+
+  status: String
+
+  opsStatus: String
+
+  cycle: Cycle!
+
+  user: User!
+
+  percentComplete: Float!
+}
+
+type DepartmentPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [Department!]!
+}
+
+input DepartmentSortField {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type EvaluationsPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [Evaluation!]!
+}
+
+type QuestionPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [EvaluationTypeQuestion!]!
+}
+
+type TypePagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [EvaluationType!]!
+}
+
+type LocationPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [Location!]!
+}
+
+input LocationSortField {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type NotificationScheduled {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  sendAt: DateTime!
+
+  payload: String
+
+  isSent: Boolean!
+}
+
+type NotificationShort {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  key: String!
+
+  fromEmail: String
+
+  fromName: String
+
+  subject: String!
+
+  content: String!
+
+  isRead: Boolean
+
+  fullContent: String
+}
+
+type NotificationTemplate {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  key: String!
+
+  subject: String!
+
+  content: String!
+
+  name: String!
+
+  shortContent: String!
+}
+
+type PerformanceSummaryUserDetails {
+  questionSummary: [QuestionSummary!]!
+
+  evaluations: [Evaluation!]!
+
+  performanceSummary: PerformanceSummary!
+}
+
+type QuestionSummary {
+  question: EvaluationTypeQuestion!
+
+  ratingAverage: Float!
+
+  ratingAverageMdAndAbove: Float!
+}
+
+type ReminderTemplate {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  name: String!
+
+  subject: String!
+
+  content: String!
+
+  key: String!
+
+  shortContent: String!
+
+  reminderMe: Boolean!
+}
+
+type TemplatePagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [ReminderTemplate!]!
+}
+
+input SortFieldTemplate {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type Setting {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  key: String!
+
+  value: String!
+}
+
+type StrategyPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [Strategy!]!
+}
+
+input StrategySortField {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type TitlePagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [Title!]!
+}
+
+input TitleSortField {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type UserEvaluationPagination implements Pagination {
+  total: Float!
+
+  page: Float!
+
+  pageSize: Float!
+
+  data: [Evaluation!]!
+}
+
+input SortUserEvaluation {
+  field: String!
+
+  order: String = "ASC"
+}
+
+type ExportOutPut {
+  url: String!
+}
+
+input PayLoad {
+  isFormatFull: Boolean
+
+  isShare: Boolean
+
+  isMissingByMe: Boolean
+
+  withNormalization: Boolean = false
+
+  withAverage: Boolean = false
+
+  ratingAs: String = "by_me"
+
+  type: String = "excel"
+
+  isEvaluationMode: Boolean
+}
+
+type ShareOpsOutPut {
+  status: Boolean!
+
+  error: String
+}
+
+input PerformanceSummaryPayload {
+  isFormatFull: Boolean
+
+  isShare: Boolean
+
+  isMissingByMe: Boolean
+
+  withNormalization: Boolean
+
+  withAverage: Boolean = false
+
+  ratingAs: String = "by_me"
+
+  type: String = "excel"
+
+  isEvaluationMode: Boolean
+
+  withNames: Boolean
+
+  mdAndAbove: Boolean
+
+  withRatingCount: Boolean
+
+  withRatingPercentage: Boolean
+
+  withHighestAndLowestRatings: Boolean
+
+  with3YearComparison: Boolean
+
+  isEvaluator: Boolean
+}
+
+type Mutation {
+  login(email: String!, password: String!): AuthResponse!
+
+  addOneUser(data: UserAccountInput!): User!
+
+  updateOneUser(data: UserAccountInput!, id: Float!): User!
+
+  promoteUser(data: PromoteData!, id: Float!): User!
+
+  deleteUsers(filter: UserActionFilter!): String!
+
+  inactiveUser(filter: UserActionFilter!): [User!]!
+
+  resetListOfContributors(locIds: [Float!]!): [CycleContributor!]!
+
+  resetEvaluation(eIds: [Float!]!): [Evaluation!]!
+
+  resetPerformanceSummary(psIds: [Float!]!): [PerformanceSummary!]!
+
+  """
+  Approve or submit list of contributors
+  """
+  submitLOC(evaluateeId: Float, isSendReminder: Boolean!): CycleContributor!
+
+  """
+  Approve or submit list of contributors
+  """
+  approveLOC(isSendReminder: Boolean!, ids: CycleContributorID!): [CycleContributor!]!
+
+  updateOneCycleContributor(data: CycleContributorInput!, id: Float!): CycleContributor!
+
+  addOneCycleContributorUser(data: CycleContributorUserInput!): CycleContributorUser!
+
+  addContributors(data: [CreateContributorInput!]!, userId: Float!): [CycleContributorUser!]!
+
+  updateOneCycleContributorUser(id: Float!, data: CycleContributorUserInput!): CycleContributor!
+
+  deleteCycleContributorUser(cycleId: Float, userId: Float, isSelectAll: Boolean!, cycleContributorUserIds: [Float!]!): String!
+
+  addOneCycle(data: CycleInput!): Cycle!
+
+  updateOneCycle(data: CycleInput!, id: Float!): Cycle!
+
+  deleteOneCycle(id: Float!): String!
+
+  deleteCycles(input: DeleteCyclesInput!): String!
+
+  addOneDepartment(data: DepartmentInput!): Department!
+
+  updateOneDepartment(data: DepartmentInput!, id: Float!): Department!
+
+  deleteDepartment(ids: [Float!]!): String!
+
+  setAllDeadlineForDepartment(strategyId: Float!, data: DeadlineDepartment!): String!
+
+  updateEvaluation(isAdminMode: Boolean!, saveStatus: String!, data: EvaluationUpdate!, evaluationId: Float!): Evaluation!
+
+  reverseOptOut(evaluationId: Float!): Evaluation!
+
+  """
+  Delete evaluation in Evaluation Mode -> My Forms -> My Evaluations
+  """
+  deleteEvaluation(evaluationId: Float!): String!
+
+  """
+  Submit Evaluation in Evaluation Mode -> My Forms -> My Evaluations
+  """
+  submitEvaluation: SubmitAllStatus!
+
+  addOneEvaluationTypeQuestion(data: EvaluationTypeQuestionInput!): EvaluationTypeQuestion!
+
+  deleteEvaluationTypeQuestion(ids: [Float!]!): String!
+
+  addEvaluationType(data: EvaluationTypeInput!): EvaluationType!
+
+  updateEvaluationType(data: EvaluationTypeInput!, typeId: Float!): EvaluationType!
+
+  deleteEvaluationType(ids: [Float!]!): String!
+
+  addOneLocation(data: LocationInput!): Location!
+
+  updateOneLocation(data: LocationInput!, id: Float!): Location!
+
+  deleteLocation(ids: [Float!]!): String!
+
+  invokeNotification(filter: UserActionFilter!, data: NotificationRequest!): String!
+
+  addOneNotificationScheduled(data: NotificationScheduledInput!): NotificationScheduled!
+
+  updateOneNotificationScheduled(id: Float!, data: NotificationScheduledInput!): NotificationScheduled!
+
+  deleteOneNotificationScheduled(id: Float!): String!
+
+  sendMailForTechSupport(content: String!): String!
+
+  addOneNotificationShort(data: NotificationShortInput!): NotificationShort!
+
+  updateOneNotificationShort(id: Float!, data: NotificationShortInput!): NotificationShort!
+
+  clearAllNotifications: [NotificationShort!]
+
+  deleteOneNotificationShort(id: Float!): String!
+
+  addOneNotificationTemplate(data: NotificationTemplateInput!): NotificationTemplate!
+
+  updateOneNotificationTemplate(id: Float!, data: NotificationTemplateInput!): NotificationTemplate!
+
+  deleteOneNotificationTemplate(id: Float!): String!
+
+  finalizePerformanceSummary(data: PerformanceSummaryFinalizeInput!, psId: Float!): PerformanceSummary!
+
+  addOneReminderTemplate(data: ReminderTemplateInput!): ReminderTemplate!
+
+  updateOneReminderTemplate(data: ReminderTemplateInput!, id: Float!): ReminderTemplate!
+
+  deleteReminderTemplate(ids: [Float!]!): String!
+
+  addOneRole(data: RoleInput!): Role!
+
+  updateOneRole(id: Float!, data: RoleInput!): Role!
+
+  deleteOneRole(id: Float!): String!
+
+  addOneSetting(data: SettingInput!): Setting!
+
+  updateOneSetting(id: Float!, data: SettingInput!): Setting!
+
+  deleteOneSetting(id: Float!): String!
+
+  addOneStrategy(data: StrategyInput!): Strategy!
+
+  updateOneStrategy(data: StrategyInput!, id: Float!): Strategy!
+
+  deleteStrategy(ids: [Float!]!): String!
+
+  addOneTitle(data: TitleInput!): Title!
+
+  updateOneTitle(data: TitleInput!, id: Float!): Title!
+
+  deleteTitle(ids: [Float!]!): String!
+
+  updateUserProfile(data: UserProfileInput!, id: Float!): User!
+
+  addUserProfile(data: UserProfileInput!): User!
+
+  addOneOverallPerformanceSummary(data: OverallPerformanceSummaryInput!): OverallPerformanceSummary!
+
+  updateOneOverallPerformanceSummary(id: Float!, data: OverallPerformanceSummaryInput!): OverallPerformanceSummary!
+
+  deleteOneOverallPerformanceSummary(id: Float!): String!
+}
+
+type AuthResponse {
+  accessToken: String!
+}
+
+input UserAccountInput {
+  firstName: String!
+
+  lastName: String!
+
+  email: String!
+
+  isInactive: Boolean!
+
+  roleCountryCode: String
+
+  roleLocationId: Float
+
+  image: String
+
+  startDate: DateTime
+
+  roleCityCode: String
+
+  lastPromotionCycleId: Float
+
+  showPreviousComment: Float
+
+  isLockedSystem: Boolean
+
+  departmentId: Float
+
+  evaluationTypeId: Float!
+
+  locationId: Float
+
+  strategyId: Float
+
+  titleId: Float
+
+  previousTitleId: Float
+
+  evaluatorId: Float
+
+  password: String!
+}
+
+input PromoteData {
+  evaluationTypeId: Float!
+
+  titleId: Float!
+}
+
+input CycleContributorID {
+  cycleContributorIds: [Float!]!
+}
+
+input CycleContributorInput {
+  status: String!
+
+  evaluatorId: Float
+}
+
+input CycleContributorUserInput {
+  projectDetails: String!
+
+  userId: Float!
+
+  cycleContributorId: Float!
+}
+
+input CreateContributorInput {
+  projectDetails: String!
+
+  contributorId: Float!
+}
+
+input CycleInput {
+  name: String!
+}
+
+input DeleteCyclesInput {
+  ids: [Float!]!
+
+  isSelectAll: Boolean = false
+}
+
+input DepartmentInput {
+  name: String!
+
+  deadlineLOC: DateTime
+
+  deadlineConfirmLOC: DateTime
+
+  deadlineSelfAssessment: DateTime
+
+  deadlinePerformanceEvaluation: DateTime
+
+  showPreviousComment: Boolean
+
+  lockDate: DateTime
+
+  strategyId: Float
+}
+
+input DeadlineDepartment {
+  deadlineLOC: DateTime
+
+  deadlineConfirmLOC: DateTime
+
+  deadlineSelfAssessment: DateTime
+
+  deadlinePerformanceEvaluation: DateTime
+
+  lockDate: DateTime
+}
+
+input EvaluationUpdate {
+  evaluationAnswers: [EvaluationAnswerInput!]
+
+  optOutReason: String
+}
+
+input EvaluationAnswerInput {
+  questionId: Float!
+
+  feedback: String
+
+  score: Float
+}
+
+type SubmitAllStatus {
+  error: Boolean!
+
+  data: [EvaluationAnswerWithDetails!]!
+}
+
+type EvaluationAnswerWithDetails {
+  evaluation: Evaluation!
+
+  answerAndQuestions: [AnswerAndQuestions!]!
+}
+
+type AnswerAndQuestions {
+  answer: AnswerDetails!
+
+  question: EvaluationTypeQuestion!
+}
+
+type AnswerDetails {
+  id: Float!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+
+  feedback: String
+
+  score: Float
+
+  priority: Float
+
+  evaluation: Evaluation!
+
+  evaluationTypeQuestion: EvaluationTypeQuestion
+
+  isNoFeedback: Boolean
+
+  isNoScore: Boolean
+
+  isScore5s: Boolean
+
+  isScoreNA: Boolean
+
+  fullName: String
+}
+
+input EvaluationTypeQuestionInput {
+  id: Float
+
+  title: String!
+
+  subtitle: String!
+
+  text: String
+
+  isOpenQuestion: Boolean
+
+  isRequired: Boolean
+
+  isNADisabled: Boolean!
+
+  isSelfAssessment: Boolean
+
+  isEvaluation: Boolean
+
+  priority: Float
+
+  isNoExposureComment: Boolean
+}
+
+input EvaluationTypeInput {
+  name: String
+
+  createdAt: DateTime
+
+  evaluationTypeQuestions: [EvaluationTypeQuestionInput!]
+}
+
+input LocationInput {
+  name: String!
+
+  countryCode: String
+}
+
+input NotificationRequest {
+  recipient: Recipients!
+
+  templateOptions: String!
+
+  subject: String
+
+  content: String
+
+  sendAt: String
+}
+
+"""
+Recipients of reminder
+"""
+enum Recipients {
+  evaluators
+
+  contributors
+
+  users
+}
+
+input NotificationScheduledInput {
+  sendAt: DateTime!
+
+  payload: String
+
+  isSent: Boolean!
+}
+
+input NotificationShortInput {
+  key: String!
+
+  subject: String!
+
+  content: String!
+
+  isRead: Boolean!
+}
+
+input NotificationTemplateInput {
+  key: String!
+
+  subject: String!
+
+  content: String!
+
+  name: String!
+
+  shortContent: String!
+}
+
+input PerformanceSummaryFinalizeInput {
+  score: Float!
+
+  feedback: String!
+
+  isSubmit: Boolean!
+}
+
+input ReminderTemplateInput {
+  name: String!
+
+  subject: String!
+
+  content: String!
+
+  key: String!
+
+  shortContent: String!
+
+  reminderMe: Boolean!
+}
+
+input RoleInput {
+  name: String!
+
+  userId: Float!
+}
+
+input SettingInput {
+  key: String!
+
+  value: String!
+}
+
+input StrategyInput {
+  name: String!
+}
+
+input TitleInput {
+  name: String!
+
+  isMDOrAbove: Boolean
+}
+
+input UserProfileInput {
+  firstName: String!
+
+  lastName: String!
+
+  email: String!
+
+  isInactive: Boolean!
+
+  roleCountryCode: String
+
+  roleLocationId: Float
+
+  image: String
+
+  startDate: DateTime
+
+  roleCityCode: String
+
+  lastPromotionCycleId: Float
+
+  showPreviousComment: Float
+
+  isLockedSystem: Boolean
+
+  departmentId: Float
+
+  evaluationTypeId: Float!
+
+  locationId: Float
+
+  strategyId: Float
+
+  titleId: Float
+
+  previousTitleId: Float
+
+  evaluatorId: Float
+
+  permissionsExtraUsersId: [Int!]!
+
+  permissionsLimitedUsersId: [Int!]!
+
+  userAdminCountriesCode: [String!]!
+
+  userAdminLocationsId: [Int!]!
+
+  updatedUserRoles: [Int!]!
+}
+
+input OverallPerformanceSummaryInput {
+  cycleId: Float
+
+  userId: Float
+
+  status: String
+
+  isShare: Boolean
+
+  sharedDate: DateTime
+
+  overallPerformanceSummaryAnswers: [OverallPerformanceSummaryAnswerInput!]
+}
+
+input OverallPerformanceSummaryAnswerInput {
+  id: Float
+
+  feedback: String
+
+  priority: Float
+}
+
+"""
+A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.
+"""
+type __Schema {
+  description: String
+
+  """
+  A list of all types supported by this server.
+  """
+  types: [__Type!]!
+
+  """
+  The type that query operations will be rooted at.
+  """
+  queryType: __Type!
+
+  """
+  If this server supports mutation, the type that mutation operations will be rooted at.
+  """
+  mutationType: __Type
+
+  """
+  If this server support subscription, the type that subscription operations will be rooted at.
+  """
+  subscriptionType: __Type
+
+  """
+  A list of all directives supported by this server.
+  """
+  directives: [__Directive!]!
+}
+
+"""
+The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
+
+Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+"""
+type __Type {
+  kind: __TypeKind!
+
+  name: String
+
+  description: String
+
+  specifiedByUrl: String
+
+  fields(includeDeprecated: Boolean = false): [__Field!]
+
+  interfaces: [__Type!]
+
+  possibleTypes: [__Type!]
+
+  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+
+  inputFields(includeDeprecated: Boolean = false): [__InputValue!]
+
+  ofType: __Type
+}
+
+"""
+An enum describing what kind of type a given `__Type` is.
+"""
+enum __TypeKind {
+  """
+  Indicates this type is a scalar.
+  """
+  SCALAR
+
+  """
+  Indicates this type is an object. `fields` and `interfaces` are valid fields.
+  """
+  OBJECT
+
+  """
+  Indicates this type is an interface. `fields`, `interfaces`, and `possibleTypes` are valid fields.
+  """
+  INTERFACE
+
+  """
+  Indicates this type is a union. `possibleTypes` is a valid field.
+  """
+  UNION
+
+  """
+  Indicates this type is an enum. `enumValues` is a valid field.
+  """
+  ENUM
+
+  """
+  Indicates this type is an input object. `inputFields` is a valid field.
+  """
+  INPUT_OBJECT
+
+  """
+  Indicates this type is a list. `ofType` is a valid field.
+  """
+  LIST
+
+  """
+  Indicates this type is a non-null. `ofType` is a valid field.
+  """
+  NON_NULL
+}
+
+"""
+Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.
+"""
+type __Field {
+  name: String!
+
+  description: String
+
+  args(includeDeprecated: Boolean = false): [__InputValue!]!
+
+  type: __Type!
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.
+"""
+type __InputValue {
+  name: String!
+
+  description: String
+
+  type: __Type!
+
+  """
+  A GraphQL-formatted string representing the default value for this input value.
+  """
+  defaultValue: String
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.
+"""
+type __EnumValue {
+  name: String!
+
+  description: String
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
+
+In some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.
+"""
+type __Directive {
+  name: String!
+
+  description: String
+
+  isRepeatable: Boolean!
+
+  locations: [__DirectiveLocation!]!
+
+  args(includeDeprecated: Boolean = false): [__InputValue!]!
+}
+
+"""
+A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.
+"""
+enum __DirectiveLocation {
+  """
+  Location adjacent to a query operation.
+  """
+  QUERY
+
+  """
+  Location adjacent to a mutation operation.
+  """
+  MUTATION
+
+  """
+  Location adjacent to a subscription operation.
+  """
+  SUBSCRIPTION
+
+  """
+  Location adjacent to a field.
+  """
+  FIELD
+
+  """
+  Location adjacent to a fragment definition.
+  """
+  FRAGMENT_DEFINITION
+
+  """
+  Location adjacent to a fragment spread.
+  """
+  FRAGMENT_SPREAD
+
+  """
+  Location adjacent to an inline fragment.
+  """
+  INLINE_FRAGMENT
+
+  """
+  Location adjacent to a variable definition.
+  """
+  VARIABLE_DEFINITION
+
+  """
+  Location adjacent to a schema definition.
+  """
+  SCHEMA
+
+  """
+  Location adjacent to a scalar definition.
+  """
+  SCALAR
+
+  """
+  Location adjacent to an object type definition.
+  """
+  OBJECT
+
+  """
+  Location adjacent to a field definition.
+  """
+  FIELD_DEFINITION
+
+  """
+  Location adjacent to an argument definition.
+  """
+  ARGUMENT_DEFINITION
+
+  """
+  Location adjacent to an interface definition.
+  """
+  INTERFACE
+
+  """
+  Location adjacent to a union definition.
+  """
+  UNION
+
+  """
+  Location adjacent to an enum definition.
+  """
+  ENUM
+
+  """
+  Location adjacent to an enum value definition.
+  """
+  ENUM_VALUE
+
+  """
+  Location adjacent to an input object type definition.
+  """
+  INPUT_OBJECT
+
+  """
+  Location adjacent to an input object field definition.
+  """
+  INPUT_FIELD_DEFINITION
+}
+
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
+directive @include ("Included when true." if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
+directive @skip ("Skipped when true." if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+
+"""
+Marks an element of a GraphQL schema as no longer supported.
+"""
+directive @deprecated ("Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted using the Markdown syntax, as specified by [CommonMark](https:\/\/commonmark.org\/)." reason: String = "No longer supported") on FIELD_DEFINITION|ARGUMENT_DEFINITION|INPUT_FIELD_DEFINITION|ENUM_VALUE
+
+"""
+Exposes a URL that specifies the behaviour of this scalar.
+"""
+directive @specifiedBy ("The URL that specifies the behaviour of this scalar." url: String!) on SCALAR
+
+schema {
+  query: Query
+  mutation: Mutation
+}

@@ -1,0 +1,6 @@
+query GetAllStrategies {
+    getAllStrategies {
+        id
+        name
+    }
+}

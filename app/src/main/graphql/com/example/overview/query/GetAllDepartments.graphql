@@ -1,0 +1,9 @@
+query GetAllDepartments {
+    getAllDepartments {
+        id
+        name
+        strategy {
+            id
+        }
+    }
+}
