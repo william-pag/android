@@ -56,11 +56,7 @@ class HomeFragment : Fragment() {
                         R.layout.item_evaluation_dropdown_selected,
                         allStrategies
                     )
-
                     homeBinding.spinnerStrategy.adapter = dropdownEvaluationAdapter
-
-                    homeBinding.spinnerStrategy.dropDownVerticalOffset = 200
-
                     homeBinding.spinnerStrategy.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             val strategyId: Optional<Double?> = if (allStrategies[p2].id == 0.0) {
@@ -96,7 +92,6 @@ class HomeFragment : Fragment() {
                     )
                     dropdownEvaluationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     homeBinding.spinnerDepartment.adapter = dropdownEvaluationAdapter
-                    homeBinding.spinnerDepartment.dropDownVerticalOffset = 350
                     homeBinding.spinnerDepartment.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             Log.d("EvaluationAdapter", allDepartments[p2].name)
