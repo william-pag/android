@@ -1,6 +1,8 @@
 package com.example.pagandroid.activities.home.bottom_fragment.home
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +11,11 @@ import com.example.pagandroid.GetAllDepartmentsQuery
 import com.example.pagandroid.GetAllStrategiesQuery
 import com.example.pagandroid.databinding.ItemEvaluationDropdownBinding
 import com.example.pagandroid.databinding.ItemEvaluationDropdownSelectedBinding
-
-class DropdownEvaluationAdapter(
+class DropdownEvaluationAdapter<T>(
     private val context: Context,
     private val resource: Int,
-    arrObject: Array<out GetAllStrategiesQuery.Data?>
-): ArrayAdapter<GetAllStrategiesQuery.Data>(context, resource, arrObject) {
+    arrObject: MutableList<T>
+): ArrayAdapter<T>(context, resource, arrObject) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val dropdownSelectedBinding: ItemEvaluationDropdownSelectedBinding
         var row = convertView
@@ -26,7 +27,11 @@ class DropdownEvaluationAdapter(
             dropdownSelectedBinding = ItemEvaluationDropdownSelectedBinding.bind(row)
         }
         val result = this.getItem(position)
-        dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result?.getAllStrategies?.get(position)?.name ?: ""
+        if (result is GetAllStrategiesQuery.GetAllStrategy) {
+            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result?.name ?: ""
+        } else if (result is GetAllDepartmentsQuery.GetAllDepartment) {
+            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result?.name ?: ""
+        }
         return row
     }
 
@@ -41,7 +46,14 @@ class DropdownEvaluationAdapter(
             dropdownBinding = ItemEvaluationDropdownBinding.bind(row)
         }
         val result = this.getItem(position)
-        dropdownBinding.tvTitleDropdown.text = result?.getAllStrategies?.get(position)?.name ?: ""
+        if (result is GetAllStrategiesQuery.GetAllStrategy) {
+            dropdownBinding.tvTitleDropdown.text = result?.name ?: ""
+        } else if (result is GetAllDepartmentsQuery.GetAllDepartment) {
+            dropdownBinding.tvTitleDropdown.text = result?.name ?: ""
+        }
+        if (position == 0) {
+            dropdownBinding.tvTitleDropdown.setTextColor(Color.GRAY)
+        }
         return row
     }
 }

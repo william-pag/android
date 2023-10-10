@@ -1,5 +1,5 @@
-query GetAllDepartments {
-    getAllDepartments {
+query GetAllDepartments($strategyId: Float) {
+    getAllDepartments(strategyId: $strategyId) {
         id
         name
         strategy {

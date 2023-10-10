@@ -24,12 +24,12 @@ class User() {
 
     suspend fun login(email: String, password: String): String? {
         val result = this.apolloClient.client.mutation(LoginMutation(email = email, password = password)).execute()
-        if (result.data != null) {
+        return if (result.data != null) {
             this.apolloClient.setClient(result.data?.login?.accessToken.toString())
-            return result.data?.login?.accessToken.toString()
+            result.data?.login?.accessToken.toString()
         } else {
             result.errors?.first()?.message?.let { GlobalAction.shared.makeToast(it) }
-            return null
+            null
         }
     }
 }
