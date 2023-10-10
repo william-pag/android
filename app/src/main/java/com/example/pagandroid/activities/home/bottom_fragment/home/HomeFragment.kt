@@ -18,6 +18,10 @@ import com.example.pagandroid.dao.Overview
 import com.example.pagandroid.databinding.FragmentHomeBinding
 import kotlinx.coroutines.*
 import com.apollographql.apollo3.api.Optional
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import okhttp3.internal.notifyAll
 
 
 /**
@@ -37,6 +41,7 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             setSpinnerStrategy(layoutInflater.context)
             setSpinnerDepartment(layoutInflater.context)
+            createChartOverview(Optional.Absent, Optional.Absent)
         }
         return this.homeBinding.root
     }
@@ -65,13 +70,14 @@ class HomeFragment : Fragment() {
                                 Optional.present(allStrategies[p2].id)
                             }
 
-                            setSpinnerDepartment(context, strategyId)
+                            if (p2 != 0) {
+                                setSpinnerDepartment(context, strategyId)
+                            }
                         }
 
                         override fun onNothingSelected(p0: AdapterView<*>?) {
                             Log.d("EvaluationAdapter", "NothingSelected")
                         }
-
                     }
                 }
 
@@ -79,7 +85,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    @SuppressLint("ResourceType")
     private fun setSpinnerDepartment(context: Context, strategyId: Optional<Double?> = Optional.Absent) {
         CoroutineScope(Dispatchers.IO).launch {
             val allDepartments = getAllDepartments(strategyId = strategyId)
@@ -94,7 +99,10 @@ class HomeFragment : Fragment() {
                     homeBinding.spinnerDepartment.adapter = dropdownEvaluationAdapter
                     homeBinding.spinnerDepartment.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            Log.d("EvaluationAdapter", allDepartments[p2].name)
+                            if (p2 != 0) {
+                                val departmentIds = Optional.present(listOf(allDepartments[p2].id))
+                                createChartOverview(strategyId, departmentIds)
+                            }
                         }
 
                         override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -116,6 +124,7 @@ class HomeFragment : Fragment() {
     }
     private suspend fun getAllDepartments(strategyId: Optional<Double?> = Optional.Absent): MutableList<GetAllDepartmentsQuery.GetAllDepartment>? {
         Log.d("strategyId", "$strategyId")
+        val setDepartmentId = mutableSetOf<Double>()
         val departments =  Overview.shard.getAllDepartments(strategyId = strategyId)
         var arrDepartments = departments?.getAllDepartments?.toMutableList()
         if (strategyId == Optional.Absent) {
@@ -125,8 +134,36 @@ class HomeFragment : Fragment() {
             }
             arrDepartments = mapDepartment.values.toMutableList()
             mapDepartment.clear()
+        } else {
+            arrDepartments?.forEach { getAllDepartment ->
+                setDepartmentId.plus(getAllDepartment.id)
+            }
         }
+        val departmentIds = if (strategyId == Optional.Absent) {
+            Optional.Absent
+        } else {
+            Optional.present(setDepartmentId.toList())
+        }
+        createChartOverview(strategyId = strategyId, departmentIds = departmentIds)
         arrDepartments?.add(0, GetAllDepartmentsQuery.GetAllDepartment(0.0, "Select Department", null))
+        setDepartmentId.clear()
         return arrDepartments
+    }
+
+    private fun createChartOverview(strategyId: Optional<Double?> = Optional.Absent, departmentIds: Optional<List<Double>?> = Optional.Absent)  {
+        CoroutineScope(Dispatchers.IO).launch {
+            val overallProgress = Overview.shard.getOverallProgress(departmentIds, strategyId)
+            Log.d(TAG, "${overallProgress?.overallProgress}")
+            CoroutineScope(Dispatchers.Main).launch {
+                val entries = arrayListOf(
+                    PieEntry(10f, "1"),
+                    PieEntry(10f, "2"),
+                    PieEntry(10f, "3")
+                )
+                val pieDataSet = PieDataSet(entries, "Overall")
+                homeBinding.chartOverallProgress.data = PieData(pieDataSet)
+                homeBinding.chartOverallProgress.notifyDataSetChanged()
+            }
+        }
     }
 }

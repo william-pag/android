@@ -1,0 +1,7 @@
+query OverallProgress($departmentIds: [Float!], $strategyId: Float) {
+    overallProgress(departmentIds: $departmentIds, strategyId: $strategyId) {
+        percentComplete
+        complete
+        overall
+    }
+}
