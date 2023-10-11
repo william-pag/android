@@ -1,8 +1,7 @@
 
-query GetAllUser {
+query GetAllUserName {
     getAllUsers {
         id
         name
-        email
     }
 }

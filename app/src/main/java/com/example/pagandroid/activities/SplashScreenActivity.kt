@@ -31,7 +31,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
 
-    suspend fun checkLogin() {
+    private suspend fun checkLogin() {
         val token = SharedPreference(this@SplashScreenActivity).getToken()
         if (token != null) {
             myApolloClient.setClient(token)
@@ -59,5 +59,11 @@ class SplashScreenActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             GlobalAction.shared.redirectLogin()
         }
+    }
+
+    override fun onDestroy() {
+        myApolloClient.removeClient()
+        StoreContext.removeContext()
+        super.onDestroy()
     }
 }

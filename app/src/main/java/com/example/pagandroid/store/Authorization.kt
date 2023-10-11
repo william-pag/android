@@ -1,5 +1,6 @@
 package com.example.pagandroid.store
 
+import android.annotation.SuppressLint
 import android.content.Context
 
 class Authorization {
@@ -16,10 +17,6 @@ class Authorization {
     }
 }
 
-fun myStoreContext(): Authorization {
-    val auth = Authorization()
 
-    return auth
-}
-
-val StoreContext = myStoreContext()
+@SuppressLint("StaticFieldLeak")
+val StoreContext = Authorization()

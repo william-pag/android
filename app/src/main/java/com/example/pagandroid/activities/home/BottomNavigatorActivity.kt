@@ -3,6 +3,7 @@ package com.example.pagandroid.activities.home
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import com.bumptech.glide.Glide

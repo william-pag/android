@@ -1,27 +1,25 @@
 package com.example.pagandroid.activities.home.bottom_fragment.home
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ListPopupWindow
-import android.widget.Spinner
+import androidx.core.view.setPadding
+import androidx.fragment.app.Fragment
+import com.apollographql.apollo3.api.Optional
 import com.example.pagandroid.GetAllDepartmentsQuery
 import com.example.pagandroid.GetAllStrategiesQuery
 import com.example.pagandroid.R
 import com.example.pagandroid.dao.Overview
 import com.example.pagandroid.databinding.FragmentHomeBinding
-import kotlinx.coroutines.*
-import com.apollographql.apollo3.api.Optional
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import okhttp3.internal.notifyAll
+import kotlinx.coroutines.*
 
 
 /**
@@ -40,8 +38,6 @@ class HomeFragment : Fragment() {
         _homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
         CoroutineScope(Dispatchers.Main).launch {
             setSpinnerStrategy(layoutInflater.context)
-            setSpinnerDepartment(layoutInflater.context)
-            createChartOverview(Optional.Absent, Optional.Absent)
         }
         return this.homeBinding.root
     }
@@ -69,10 +65,7 @@ class HomeFragment : Fragment() {
                             } else {
                                 Optional.present(allStrategies[p2].id)
                             }
-
-                            if (p2 != 0) {
-                                setSpinnerDepartment(context, strategyId)
-                            }
+                            setSpinnerDepartment(context, strategyId)
                         }
 
                         override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -99,10 +92,15 @@ class HomeFragment : Fragment() {
                     homeBinding.spinnerDepartment.adapter = dropdownEvaluationAdapter
                     homeBinding.spinnerDepartment.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            if (p2 != 0) {
-                                val departmentIds = Optional.present(listOf(allDepartments[p2].id))
-                                createChartOverview(strategyId, departmentIds)
+                            val departmentIds = if (p2 == 0 || strategyId == Optional.Absent) {
+                                Optional.Absent
+                            } else {
+                                Optional.present(listOf(allDepartments[p2].id))
                             }
+                            createChartOverview(strategyId, departmentIds)
+                            createChartPerformance(strategyId, departmentIds)
+                            createChartContributor(strategyId, departmentIds)
+                            createChartSelfAssessment(strategyId, departmentIds)
                         }
 
                         override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -123,8 +121,6 @@ class HomeFragment : Fragment() {
         return arrStrategy
     }
     private suspend fun getAllDepartments(strategyId: Optional<Double?> = Optional.Absent): MutableList<GetAllDepartmentsQuery.GetAllDepartment>? {
-        Log.d("strategyId", "$strategyId")
-        val setDepartmentId = mutableSetOf<Double>()
         val departments =  Overview.shard.getAllDepartments(strategyId = strategyId)
         var arrDepartments = departments?.getAllDepartments?.toMutableList()
         if (strategyId == Optional.Absent) {
@@ -134,19 +130,8 @@ class HomeFragment : Fragment() {
             }
             arrDepartments = mapDepartment.values.toMutableList()
             mapDepartment.clear()
-        } else {
-            arrDepartments?.forEach { getAllDepartment ->
-                setDepartmentId.plus(getAllDepartment.id)
-            }
         }
-        val departmentIds = if (strategyId == Optional.Absent) {
-            Optional.Absent
-        } else {
-            Optional.present(setDepartmentId.toList())
-        }
-        createChartOverview(strategyId = strategyId, departmentIds = departmentIds)
         arrDepartments?.add(0, GetAllDepartmentsQuery.GetAllDepartment(0.0, "Select Department", null))
-        setDepartmentId.clear()
         return arrDepartments
     }
 
@@ -154,15 +139,109 @@ class HomeFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             val overallProgress = Overview.shard.getOverallProgress(departmentIds, strategyId)
             Log.d(TAG, "${overallProgress?.overallProgress}")
-            CoroutineScope(Dispatchers.Main).launch {
-                val entries = arrayListOf(
-                    PieEntry(10f, "1"),
-                    PieEntry(10f, "2"),
-                    PieEntry(10f, "3")
-                )
-                val pieDataSet = PieDataSet(entries, "Overall")
-                homeBinding.chartOverallProgress.data = PieData(pieDataSet)
-                homeBinding.chartOverallProgress.notifyDataSetChanged()
+            val data = overallProgress?.overallProgress
+            if (data != null) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val entries = arrayListOf(
+                        PieEntry(data.percentComplete.toFloat(), "Complete"),
+                        PieEntry((100 - data.percentComplete).toFloat(), "All")
+                    )
+                    val pieDataSet = PieDataSet(entries, "")
+                    pieDataSet.setColors(Color.CYAN, Color.LTGRAY)
+                    pieDataSet.isVisible = true
+                    pieDataSet.valueTextSize = 0f
+                    homeBinding.tvOverviewProgress.text = "${data.complete.toInt()} of ${data.overall.toInt()} Completed"
+                    homeBinding.tvOverviewPercent.text = "Status ${data.percentComplete.toInt()}% Completed"
+
+                    homeBinding.chartOverallProgress.setDrawEntryLabels(false)
+                    homeBinding.chartOverallProgress.description.isEnabled = false
+                    homeBinding.chartOverallProgress.data = PieData(pieDataSet)
+                    homeBinding.chartOverallProgress.holeRadius = (homeBinding.chartOverallProgress.width * 0.13).toFloat()
+                    homeBinding.chartOverallProgress.centerText = "${data.percentComplete}%"
+                    homeBinding.chartOverallProgress.invalidate()
+                }
+            }
+        }
+    }
+
+    private fun createChartPerformance(strategyId: Optional<Double?> = Optional.Absent, departmentIds: Optional<List<Double>?> = Optional.Absent)  {
+        CoroutineScope(Dispatchers.IO).launch {
+            val performanceEvaluation = Overview.shard.getPerformanceEvaluation(departmentIds, strategyId)
+            val data = performanceEvaluation?.performanceEvaluation
+            if (data != null) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val entries = arrayListOf(
+                        PieEntry(data.percentComplete.toFloat(), "Complete"),
+                        PieEntry((100 - data.percentComplete).toFloat(), "All")
+                    )
+                    val pieDataSet = PieDataSet(entries, "")
+                    pieDataSet.setColors(Color.BLUE, Color.LTGRAY)
+                    pieDataSet.isVisible = true
+                    pieDataSet.valueTextSize = 0f
+                    homeBinding.tvPerformanceProgress.text = "${data.complete.toInt()} of ${data.overall.toInt()} Completed"
+                    homeBinding.tvPerformancePercent.text = "Status ${data.percentComplete.toInt()}% Completed"
+
+                    homeBinding.chartPerformanceEvaluation.setDrawEntryLabels(false)
+                    homeBinding.chartPerformanceEvaluation.description.isEnabled = false
+                    homeBinding.chartPerformanceEvaluation.data = PieData(pieDataSet)
+                    homeBinding.chartPerformanceEvaluation.holeRadius = (homeBinding.chartOverallProgress.width * 0.13).toFloat()
+                    homeBinding.chartPerformanceEvaluation.centerText = "${data.percentComplete}%"
+                    homeBinding.chartPerformanceEvaluation.invalidate()
+                }
+            }
+        }
+    }
+    private fun createChartContributor(strategyId: Optional<Double?> = Optional.Absent, departmentIds: Optional<List<Double>?> = Optional.Absent)  {
+        CoroutineScope(Dispatchers.IO).launch {
+            val listContributors = Overview.shard.getListContributor(departmentIds, strategyId)
+            val data = listContributors?.listContributors
+            if (data != null) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val entries = arrayListOf(
+                        PieEntry(data.percentComplete.toFloat(), "Complete"),
+                        PieEntry((100 - data.percentComplete).toFloat(), "All")
+                    )
+                    val pieDataSet = PieDataSet(entries, "")
+                    pieDataSet.setColors(Color.GREEN, Color.LTGRAY)
+                    pieDataSet.isVisible = true
+                    pieDataSet.valueTextSize = 0f
+                    homeBinding.tvContributorProgress.text = "${data.complete.toInt()} of ${data.overall.toInt()} Completed"
+                    homeBinding.tvContributorPercent.text = "Status ${data.percentComplete.toInt()}% Completed"
+
+                    homeBinding.chartListContributor.setDrawEntryLabels(false)
+                    homeBinding.chartListContributor.description.isEnabled = false
+                    homeBinding.chartListContributor.data = PieData(pieDataSet)
+                    homeBinding.chartListContributor.holeRadius = (homeBinding.chartOverallProgress.width * 0.13).toFloat()
+                    homeBinding.chartListContributor.centerText = "${data.percentComplete}%"
+                    homeBinding.chartListContributor.invalidate()
+                }
+            }
+        }
+    }
+    private fun createChartSelfAssessment(strategyId: Optional<Double?> = Optional.Absent, departmentIds: Optional<List<Double>?> = Optional.Absent)  {
+        CoroutineScope(Dispatchers.IO).launch {
+            val selfAssessments = Overview.shard.getSelfAssessment(departmentIds, strategyId)
+            val data = selfAssessments?.selfAssessments
+            if (data != null) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val entries = arrayListOf(
+                        PieEntry(data.percentComplete.toFloat(), "Complete"),
+                        PieEntry((100 - data.percentComplete).toFloat(), "All")
+                    )
+                    val pieDataSet = PieDataSet(entries, "")
+                    pieDataSet.setColors(Color.MAGENTA, Color.LTGRAY)
+                    pieDataSet.isVisible = true
+                    pieDataSet.valueTextSize = 0f
+                    homeBinding.tvSelfAssessmentProgress.text = "${data.complete.toInt()} of ${data.overall.toInt()} Completed"
+                    homeBinding.tvSelfAssessmentPercent.text = "Status ${data.percentComplete.toInt()}% Completed"
+
+                    homeBinding.chartSelfAssessment.setDrawEntryLabels(false)
+                    homeBinding.chartSelfAssessment.description.isEnabled = false
+                    homeBinding.chartSelfAssessment.data = PieData(pieDataSet)
+                    homeBinding.chartSelfAssessment.holeRadius = (homeBinding.chartOverallProgress.width * 0.13).toFloat()
+                    homeBinding.chartSelfAssessment.centerText = "${data.percentComplete}%"
+                    homeBinding.chartSelfAssessment.invalidate()
+                }
             }
         }
     }

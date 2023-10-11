@@ -1,0 +1,7 @@
+query SelfAssessment($strategyId: Float, $departmentIds: [Float!]) {
+    selfAssessments(strategyId: $strategyId, departmentIds: $departmentIds) {
+        overall
+        complete
+        percentComplete
+    }
+}

@@ -1,0 +1,7 @@
+query ListContributor($strategyId: Float, $departmentIds: [Float!]) {
+    listContributors(strategyId: $strategyId, departmentIds: $departmentIds) {
+        overall
+        complete
+        percentComplete
+    }
+}

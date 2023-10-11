@@ -5,14 +5,14 @@ import com.apollographql.apollo3.network.okHttpClient
 import okhttp3.OkHttpClient
 
 class MyApolloClient {
-    var client = ApolloClient.Builder()
+    private var _client: ApolloClient? = ApolloClient.Builder()
         .serverUrl("http://103.81.85.228:5000/graphql")
         .build()
-    var token: String? = null
+    val client get() = _client!!
 
+    val nullableClient get() = _client
     fun setClient(token: String) {
-        this.token = token
-        this.client = ApolloClient.Builder()
+        this._client = ApolloClient.Builder()
             .serverUrl("http://103.81.85.228:5000/graphql")
             .okHttpClient(
                 OkHttpClient.Builder()
@@ -21,12 +21,9 @@ class MyApolloClient {
             )
             .build()
     }
+    fun removeClient() {
+        this._client = null
+    }
 }
 
-fun createClient(): MyApolloClient {
-    val client = MyApolloClient()
-
-    return client
-}
-
-val myApolloClient = createClient()
+val myApolloClient = MyApolloClient()

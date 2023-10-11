@@ -1,0 +1,7 @@
+query PerformanceEvaluation($strategyId: Float, $departmentIds: [Float!]) {
+    performanceEvaluation(strategyId: $strategyId, departmentIds: $departmentIds) {
+        overall
+        complete
+        percentComplete
+    }
+}
