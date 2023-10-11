@@ -34,7 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toStartOf="@+id/user_avatar"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/user_avatar"/>
         <ImageView
                 android:id="@+id/user_avatar"
                 android:src="@drawable/ic_profile"

@@ -255,7 +255,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rc_performance_evaluations"
+                android:id="@+id/rcv_performance_evaluations"
                 android:layout_width="match_parent"
                 android:layout_height="500dp"
                 android:layout_weight="1" />

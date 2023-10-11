@@ -4,6 +4,7 @@ import com.example.pagandroid.GetAllUserNameQuery
 import com.example.pagandroid.LoginMutation
 import com.example.pagandroid.MeQuery
 import com.example.pagandroid.controllers.login.GlobalAction
+import com.example.pagandroid.dao.handle.HandleResult
 import com.example.pagandroid.store.myApolloClient
 
 class User() {
@@ -14,12 +15,12 @@ class User() {
 
     suspend fun getMe(): MeQuery.Data? {
         val result = this.apolloClient.client.query(MeQuery()).execute()
-        return result.data
+        return HandleResult.shared.handleResult(result)
     }
 
     suspend fun getUser(): GetAllUserNameQuery.Data? {
         val result = this.apolloClient.client.query(GetAllUserNameQuery()).execute()
-        return result.data
+        return HandleResult.shared.handleResult(result)
     }
 
     suspend fun login(email: String, password: String): String? {

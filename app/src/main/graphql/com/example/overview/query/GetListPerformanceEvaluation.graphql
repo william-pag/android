@@ -1,0 +1,13 @@
+query GetListPerformanceEvaluation {
+    getListPerformanceEvaluations {
+        isComplete
+        completedPercentage
+        completePerformance
+        totalPerformance
+        user {
+            id
+            name
+            image
+        }
+    }
+}
