@@ -9,14 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.LinearLayout
-import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo3.api.Optional
 import com.example.pagandroid.GetAllDepartmentsQuery
 import com.example.pagandroid.GetAllStrategiesQuery
 import com.example.pagandroid.R
+import com.example.pagandroid.activities.home.bottom_fragment.dropdown.DropdownEvaluationAdapter
 import com.example.pagandroid.dao.Overview
 import com.example.pagandroid.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.data.PieData
@@ -78,7 +77,6 @@ class HomeFragment : Fragment() {
                         }
                     }
                 }
-
             }
         }
     }

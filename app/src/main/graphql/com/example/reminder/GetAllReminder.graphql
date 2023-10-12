@@ -1,0 +1,10 @@
+query GetAllReminder($userId: Float) {
+    getAllNotificationLogs(userId: $userId) {
+        id
+        subject
+        content
+        toName
+        key
+        createdAt
+    }
+}

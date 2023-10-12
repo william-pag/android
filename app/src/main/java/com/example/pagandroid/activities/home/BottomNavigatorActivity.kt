@@ -3,15 +3,13 @@ package com.example.pagandroid.activities.home
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.MenuItem
 import com.bumptech.glide.Glide
 import com.example.pagandroid.R
 import com.example.pagandroid.activities.home.bottom_fragment.DeadlineFragment
 import com.example.pagandroid.activities.home.bottom_fragment.home.HomeFragment
 import com.example.pagandroid.activities.home.bottom_fragment.ProfileFragment
-import com.example.pagandroid.activities.home.bottom_fragment.ReminderFragment
+import com.example.pagandroid.activities.home.bottom_fragment.reminder.ReminderFragment
 import com.example.pagandroid.databinding.ActivityBottomNavigatorBinding
 import com.example.pagandroid.room.RoomController
 import com.google.android.material.navigation.NavigationView
@@ -30,7 +28,7 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
         }
         // Navigate to the Home fragment by default
         supportFragmentManager.beginTransaction()
-            .replace(R.id.content_frame, HomeFragment())
+            .replace(R.id.content_frame, ReminderFragment())
             .commit()
         CoroutineScope(Dispatchers.IO).launch {
             setMainUser()

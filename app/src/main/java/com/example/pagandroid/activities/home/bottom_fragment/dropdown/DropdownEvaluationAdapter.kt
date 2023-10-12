@@ -1,14 +1,14 @@
-package com.example.pagandroid.activities.home.bottom_fragment.home
+package com.example.pagandroid.activities.home.bottom_fragment.dropdown
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import com.example.pagandroid.GetAllDepartmentsQuery
 import com.example.pagandroid.GetAllStrategiesQuery
+import com.example.pagandroid.GetAllUserNameQuery
 import com.example.pagandroid.databinding.ItemEvaluationDropdownBinding
 import com.example.pagandroid.databinding.ItemEvaluationDropdownSelectedBinding
 class DropdownEvaluationAdapter<T>(
@@ -28,9 +28,11 @@ class DropdownEvaluationAdapter<T>(
         }
         val result = this.getItem(position)
         if (result is GetAllStrategiesQuery.GetAllStrategy) {
-            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result?.name ?: ""
+            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result?.name
         } else if (result is GetAllDepartmentsQuery.GetAllDepartment) {
-            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result?.name ?: ""
+            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result?.name
+        } else if (result is GetAllUserNameQuery.GetAllUser) {
+            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result?.name
         }
         return row
     }
@@ -47,9 +49,11 @@ class DropdownEvaluationAdapter<T>(
         }
         val result = this.getItem(position)
         if (result is GetAllStrategiesQuery.GetAllStrategy) {
-            dropdownBinding.tvTitleDropdown.text = result?.name ?: ""
+            dropdownBinding.tvTitleDropdown.text = result?.name
         } else if (result is GetAllDepartmentsQuery.GetAllDepartment) {
-            dropdownBinding.tvTitleDropdown.text = result?.name ?: ""
+            dropdownBinding.tvTitleDropdown.text = result?.name
+        } else if (result is GetAllUserNameQuery.GetAllUser) {
+            dropdownBinding.tvTitleDropdown.text = result?.name
         }
         if (position == 0) {
             dropdownBinding.tvTitleDropdown.setTextColor(Color.GRAY)
