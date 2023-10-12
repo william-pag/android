@@ -251,7 +251,7 @@ class HomeFragment : Fragment() {
             val listPerformanceEvaluation = Overview.shard.getListPerformanceEvaluations()
             if (listPerformanceEvaluation?.getListPerformanceEvaluations != null) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    val adapter = ListPerformanceEvaluationAdapter(context, listPerformanceEvaluation.getListPerformanceEvaluations)
+                    val adapter = ListPerformanceEvaluationAdapter(listPerformanceEvaluation.getListPerformanceEvaluations)
                     homeBinding.rcvPerformanceEvaluations.layoutManager = LinearLayoutManager(context)
                     homeBinding.rcvPerformanceEvaluations.adapter = adapter
                 }
