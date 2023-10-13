@@ -19,6 +19,8 @@ import com.example.pagandroid.dao.Overview
 import com.example.pagandroid.dao.Reminder
 import com.example.pagandroid.dao.User
 import com.example.pagandroid.databinding.FragmentReminderBinding
+import com.example.pagandroid.databinding.ItemReminderBinding
+import com.example.pagandroid.databinding.ItemUserBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -82,7 +84,9 @@ class ReminderFragment : Fragment(), IGetUser {
         val listReminders = Reminder.shard.getAllReminders(userId)
         if (listReminders?.getAllNotificationLogs != null) {
             CoroutineScope(Dispatchers.Main).launch {
-                val adapter = ListReminderAdapter(listReminders.getAllNotificationLogs)
+                val adapter = ListReminderAdapter(listReminders.getAllNotificationLogs) { inflater, viewGroup, attachToRoot ->
+                    ItemReminderBinding.inflate(inflater, viewGroup, attachToRoot)
+                }
                 reminderBinding.rcvListReminder.layoutManager = LinearLayoutManager(context)
                 reminderBinding.rcvListReminder.adapter = adapter
             }
