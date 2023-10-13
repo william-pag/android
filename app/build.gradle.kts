@@ -82,9 +82,6 @@ dependencies {
 
     // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-    // Jsoup
-    implementation("org.jsoup:jsoup:1.16.1")
 }
 apollo {
     service("pagandroid") {

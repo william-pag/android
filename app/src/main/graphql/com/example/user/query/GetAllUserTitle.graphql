@@ -1,9 +1,7 @@
-
-query GetAllUserName {
+query GetAllUserTitle {
     getAllUsers {
         id
         name
-        image
         title {
             name
         }

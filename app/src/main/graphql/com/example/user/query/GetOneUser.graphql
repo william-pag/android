@@ -1,0 +1,28 @@
+query GetOneUser($userId: Float!) {
+    getOneUser(id: $userId) {
+        id
+        image
+        name
+        title {
+            id
+            name
+        }
+        lastLogin
+        email
+        location {
+            name
+        }
+        department {
+            name
+        }
+        strategy {
+            name
+        }
+        evaluator {
+            name
+        }
+        evaluationType {
+            name
+        }
+    }
+}

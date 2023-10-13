@@ -1,0 +1,14 @@
+query GetAllDeadline($departmentId: Float, $strategyId: Float) {
+    getAllDepartments(strategyId: $strategyId, departmentId: $departmentId) {
+        id
+        name
+        deadlineLOC
+        deadlinePerformanceEvaluation
+        deadlineConfirmLOC
+        deadlineSelfAssessment
+        strategy {
+            id
+            name
+        }
+    }
+}

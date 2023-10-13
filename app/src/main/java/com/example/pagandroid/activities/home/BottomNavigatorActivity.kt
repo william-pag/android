@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.bumptech.glide.Glide
 import com.example.pagandroid.R
-import com.example.pagandroid.activities.home.bottom_fragment.DeadlineFragment
+import com.example.pagandroid.activities.home.bottom_fragment.deadline.DeadlineFragment
 import com.example.pagandroid.activities.home.bottom_fragment.home.HomeFragment
-import com.example.pagandroid.activities.home.bottom_fragment.ProfileFragment
+import com.example.pagandroid.activities.home.bottom_fragment.user.UserFragment
 import com.example.pagandroid.activities.home.bottom_fragment.reminder.ReminderFragment
 import com.example.pagandroid.databinding.ActivityBottomNavigatorBinding
 import com.example.pagandroid.room.RoomController
@@ -28,7 +28,7 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
         }
         // Navigate to the Home fragment by default
         supportFragmentManager.beginTransaction()
-            .replace(R.id.content_frame, ReminderFragment())
+            .replace(R.id.content_frame, UserFragment())
             .commit()
         CoroutineScope(Dispatchers.IO).launch {
             setMainUser()
@@ -40,7 +40,7 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_home -> {
-                item.icon?.setLevel(5)
+//                item.icon?.level = 5
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.content_frame, HomeFragment())
                     .commit()
@@ -48,7 +48,7 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
             }
             R.id.nav_profile -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, ProfileFragment())
+                    .replace(R.id.content_frame, UserFragment())
                     .commit()
                 return true
             }

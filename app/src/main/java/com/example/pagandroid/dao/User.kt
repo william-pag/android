@@ -1,6 +1,7 @@
 package com.example.pagandroid.dao
 
 import com.example.pagandroid.GetAllUserNameQuery
+import com.example.pagandroid.GetAllUserTitleQuery
 import com.example.pagandroid.LoginMutation
 import com.example.pagandroid.MeQuery
 import com.example.pagandroid.controllers.login.GlobalAction
@@ -32,5 +33,9 @@ class User() {
             result.errors?.first()?.message?.let { GlobalAction.shared.makeToast(it) }
             null
         }
+    }
+    suspend fun getAllUserTitle(): GetAllUserTitleQuery.Data? {
+        val result = this.apolloClient.client.query(GetAllUserTitleQuery()).execute()
+        return HandleResult.shared.handleResult(result)
     }
 }

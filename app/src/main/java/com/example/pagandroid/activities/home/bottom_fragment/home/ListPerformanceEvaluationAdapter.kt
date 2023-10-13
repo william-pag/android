@@ -6,35 +6,26 @@ import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pagandroid.GetListPerformanceEvaluationQuery
+import com.example.pagandroid.activities.home.bottom_fragment.adapter.RecycleViewAdapter
 import com.example.pagandroid.databinding.ItemPerformanceEvaluationBinding
 import kotlin.math.roundToInt
 
 class ListPerformanceEvaluationAdapter(
-    private val arrEvaluation: List<GetListPerformanceEvaluationQuery.GetListPerformanceEvaluation>
-) : RecyclerView.Adapter<ListPerformanceEvaluationAdapter.ItemPerformanceEvaluation>() {
-    inner class ItemPerformanceEvaluation(val itemBinding: ItemPerformanceEvaluationBinding) :
-        RecyclerView.ViewHolder(itemBinding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemPerformanceEvaluation {
-        return ItemPerformanceEvaluation(ItemPerformanceEvaluationBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        ))
-    }
-
-    override fun getItemCount(): Int {
-        return arrEvaluation.size
-    }
-
-    override fun onBindViewHolder(holder: ItemPerformanceEvaluation, position: Int) {
-        holder.itemBinding
-        val (_, completedPercentage, completePerformance, totalPerformance, user) = arrEvaluation[position]
-        val context = holder.itemView.context
-        val binding = holder.itemBinding
+    arrEvaluation: List<GetListPerformanceEvaluationQuery.GetListPerformanceEvaluation>,
+    viewBindingFactory: (LayoutInflater, ViewGroup, Boolean) -> ItemPerformanceEvaluationBinding
+) : RecycleViewAdapter<
+        GetListPerformanceEvaluationQuery.GetListPerformanceEvaluation,
+        ItemPerformanceEvaluationBinding
+        >(arrEvaluation, viewBindingFactory) {
+    override fun bind(
+        binding: ItemPerformanceEvaluationBinding,
+        item: GetListPerformanceEvaluationQuery.GetListPerformanceEvaluation
+    ) {
+        val (_, completedPercentage, completePerformance, totalPerformance, user) = item
         binding.userName.text = user.name
-        Glide.with(context).load(user.image).into(binding.imgAvatar)
+        Glide.with(binding.root.context).load(user.image).into(binding.imgAvatar)
 
         if (completedPercentage > 66) {
             binding.btnFinalize.visibility = View.VISIBLE

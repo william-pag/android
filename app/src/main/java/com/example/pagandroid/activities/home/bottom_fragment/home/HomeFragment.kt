@@ -12,12 +12,13 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo3.api.Optional
-import com.example.pagandroid.GetAllDepartmentsQuery
-import com.example.pagandroid.GetAllStrategiesQuery
 import com.example.pagandroid.R
 import com.example.pagandroid.activities.home.bottom_fragment.dropdown.DropdownEvaluationAdapter
+import com.example.pagandroid.activities.home.bottom_fragment.dropdown.IGetDepartment
+import com.example.pagandroid.activities.home.bottom_fragment.dropdown.IGetStrategy
 import com.example.pagandroid.dao.Overview
 import com.example.pagandroid.databinding.FragmentHomeBinding
+import com.example.pagandroid.databinding.ItemPerformanceEvaluationBinding
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -30,7 +31,7 @@ import kotlinx.coroutines.*
  * create an instance of this fragment.
  */
 @SuppressLint("SetTextI18n")
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), IGetStrategy, IGetDepartment {
     private val TAG = "FragmentHomeBinding"
     private var _homeBinding: FragmentHomeBinding? = null
     private val homeBinding get() = _homeBinding!!
@@ -114,26 +115,6 @@ class HomeFragment : Fragment() {
 
             }
         }
-    }
-    private suspend fun getAllStrategies(): MutableList<GetAllStrategiesQuery.GetAllStrategy>? {
-        val strategies =  Overview.shard.getAllStrategies()
-        val arrStrategy = strategies?.getAllStrategies?.toMutableList()
-        arrStrategy?.add(0, GetAllStrategiesQuery.GetAllStrategy(0.0, "Select Strategy"))
-        return arrStrategy
-    }
-    private suspend fun getAllDepartments(strategyId: Optional<Double?> = Optional.Absent): MutableList<GetAllDepartmentsQuery.GetAllDepartment>? {
-        val departments =  Overview.shard.getAllDepartments(strategyId = strategyId)
-        var arrDepartments = departments?.getAllDepartments?.toMutableList()
-        if (strategyId == Optional.Absent) {
-            val mapDepartment = mutableMapOf<String, GetAllDepartmentsQuery.GetAllDepartment>()
-            arrDepartments?.forEach { getAllDepartment ->
-                mapDepartment[getAllDepartment.name] = getAllDepartment
-            }
-            arrDepartments = mapDepartment.values.toMutableList()
-            mapDepartment.clear()
-        }
-        arrDepartments?.add(0, GetAllDepartmentsQuery.GetAllDepartment(0.0, "Select Department", null))
-        return arrDepartments
     }
     private fun createChartOverview(strategyId: Optional<Double?> = Optional.Absent, departmentIds: Optional<List<Double>?> = Optional.Absent)  {
         CoroutineScope(Dispatchers.IO).launch {
@@ -249,7 +230,11 @@ class HomeFragment : Fragment() {
             val listPerformanceEvaluation = Overview.shard.getListPerformanceEvaluations()
             if (listPerformanceEvaluation?.getListPerformanceEvaluations != null) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    val adapter = ListPerformanceEvaluationAdapter(listPerformanceEvaluation.getListPerformanceEvaluations)
+                    val adapter = ListPerformanceEvaluationAdapter(
+                        listPerformanceEvaluation.getListPerformanceEvaluations
+                    ) { inflater, viewGroup, attachToRoot ->
+                        ItemPerformanceEvaluationBinding.inflate(inflater, viewGroup, attachToRoot)
+                    }
                     homeBinding.rcvPerformanceEvaluations.layoutManager = LinearLayoutManager(context)
                     homeBinding.rcvPerformanceEvaluations.adapter = adapter
                 }

@@ -13,6 +13,7 @@ import com.apollographql.apollo3.api.Optional
 import com.example.pagandroid.GetAllUserNameQuery
 import com.example.pagandroid.R
 import com.example.pagandroid.activities.home.bottom_fragment.dropdown.DropdownEvaluationAdapter
+import com.example.pagandroid.activities.home.bottom_fragment.dropdown.IGetUser
 import com.example.pagandroid.activities.home.bottom_fragment.home.ListPerformanceEvaluationAdapter
 import com.example.pagandroid.dao.Overview
 import com.example.pagandroid.dao.Reminder
@@ -28,7 +29,7 @@ import kotlinx.coroutines.withContext
  * Use the [ReminderFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ReminderFragment : Fragment() {
+class ReminderFragment : Fragment(), IGetUser {
     private var _reminderBinding: FragmentReminderBinding? = null
     private val reminderBinding get() = _reminderBinding!!
     override fun onCreateView(
@@ -47,15 +48,8 @@ class ReminderFragment : Fragment() {
         _reminderBinding = null
     }
 
-    private suspend fun getAllUsers(): MutableList<GetAllUserNameQuery.GetAllUser>? {
-        val result = User.shard.getUser()
-        val arrUsers = result?.getAllUsers?.toMutableList()
-        arrUsers?.add(0, GetAllUserNameQuery.GetAllUser(0.0, "All"))
-        return arrUsers
-    }
-
     private suspend fun setSpinnerUser(context: Context) {
-        val users = this.getAllUsers()
+        val users = getAllUsers()
         if (users != null) {
             CoroutineScope(Dispatchers.Main).launch {
                 val dropdownEvaluationAdapter = DropdownEvaluationAdapter(
