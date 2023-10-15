@@ -38,7 +38,7 @@ class SplashScreenActivity : AppCompatActivity() {
             val data = User.shard.getMe()
             if (data != null) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val userLogin = UserLogin(0, data.me.name, data.me.email,  data.me.cycleId, data.me.image)
+                    val userLogin = UserLogin(0, data.me.name, data.me.email,  data.me.cycleId, data.me.image, data.me.id)
                     val controller = RoomController(this@SplashScreenActivity)
                     controller.deleteUser(userLogin)
                     controller.addUserLogin(userLogin)

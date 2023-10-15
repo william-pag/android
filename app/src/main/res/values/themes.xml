@@ -1,9 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PagAndroid" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.PagAndroid" parent="Base.Theme.PagAndroid"/>
+    <style name="Theme.PagAndroid" parent="Base.Theme.PagAndroid">
+        <item name="navigationIcon">@null</item>
+    </style>
+    <style name="AppBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#F44336</item>
+    </style>
 </resources>

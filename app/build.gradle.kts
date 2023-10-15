@@ -43,7 +43,10 @@ android {
                     "src/main/res/layouts/fragment",
                     "src/main/res/layouts/fragment/bottom",
                     "src/main/res/layouts/activities",
-                    "src/main/res/layouts/activities/home", "src/main/res/layouts/fragment/items"
+                    "src/main/res/layouts/activities/home",
+                    "src/main/res/layouts/fragment/items",
+                    "src/main/res/layouts/drawer",
+                    "src/main/res/layouts/drawer/layout"
                 )
             }
         }

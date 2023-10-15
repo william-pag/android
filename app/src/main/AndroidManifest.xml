@@ -16,9 +16,9 @@
             android:usesCleartextTraffic="true"
             tools:targetApi="31">
         <activity
-                android:windowSoftInputMode="adjustResize"
                 android:name=".activities.LoginActivity"
-                android:exported="false"/>
+                android:exported="false"
+                android:windowSoftInputMode="adjustResize"/>
         <activity
                 android:name=".activities.home.BottomNavigatorActivity"
                 android:exported="false"

@@ -18,5 +18,8 @@ class ListUserAdapter(
         binding.tvUsername.text = item.name
         binding.tvTitle.text = item.title?.name ?: "Title"
         Glide.with(binding.root.context).load(item.image).into(binding.imgAvatar)
+        binding.layoutItemUser.setOnClickListener {
+            InfoUserDialog(binding.root.context, item.id).show()
+        }
     }
 }

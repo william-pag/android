@@ -1,15 +1,18 @@
 package com.example.pagandroid.activities.home
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.pagandroid.R
 import com.example.pagandroid.activities.home.bottom_fragment.deadline.DeadlineFragment
 import com.example.pagandroid.activities.home.bottom_fragment.home.HomeFragment
-import com.example.pagandroid.activities.home.bottom_fragment.user.UserFragment
 import com.example.pagandroid.activities.home.bottom_fragment.reminder.ReminderFragment
+import com.example.pagandroid.activities.home.bottom_fragment.user.InfoUserDialog
+import com.example.pagandroid.activities.home.bottom_fragment.user.UserFragment
 import com.example.pagandroid.databinding.ActivityBottomNavigatorBinding
 import com.example.pagandroid.room.RoomController
 import com.google.android.material.navigation.NavigationView
@@ -19,19 +22,38 @@ import kotlinx.coroutines.launch
 
 class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var bottomNavigatorBinding: ActivityBottomNavigatorBinding
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.bottomNavigatorBinding = ActivityBottomNavigatorBinding.inflate(layoutInflater)
         setContentView(this.bottomNavigatorBinding.root)
+        val drawer = this.bottomNavigatorBinding.drawerLayout
+        val toggle = ActionBarDrawerToggle(this, drawer, null, R.string.open_drawer, R.string.close_drawer)
+        drawer.addDrawerListener(toggle)
+        val drawerLayout = bottomNavigatorBinding.frameDrawer.drawerLayout
+        toggle.syncState()
         bottomNavigatorBinding.bottomNavigation.setOnItemSelectedListener { item ->
             onNavigationItemSelected(item)
         }
         // Navigate to the Home fragment by default
         supportFragmentManager.beginTransaction()
-            .replace(R.id.content_frame, UserFragment())
+            .replace(R.id.content_frame, HomeFragment())
             .commit()
+        bottomNavigatorBinding.imgLogo.setOnClickListener {
+            drawer.open()
+        }
         CoroutineScope(Dispatchers.IO).launch {
-            setMainUser()
+            val user = RoomController(this@BottomNavigatorActivity).getMe()
+            CoroutineScope(Dispatchers.Main).launch {
+                bottomNavigatorBinding.userName.text = user.name.replace(" ", "\n")
+                Glide.with(this@BottomNavigatorActivity).load(user.image).into(drawerLayout.drawerAvatar)
+                Glide.with(this@BottomNavigatorActivity).load(user.image).into(bottomNavigatorBinding.userAvatar)
+                drawerLayout.tvUsername.text = user.name
+                drawerLayout.tvEmail.text = user.email
+                bottomNavigatorBinding.userAvatar.setOnClickListener {
+                    InfoUserDialog(bottomNavigatorBinding.root.context, user.userId).show()
+                }
+            }
         }
 
         setBadgeReminder(5)
@@ -67,14 +89,6 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
             else -> {
                 return false
             }
-        }
-    }
-
-    fun setMainUser() {
-        val user = RoomController(this).getMe()
-        CoroutineScope(Dispatchers.Main).launch {
-            bottomNavigatorBinding.userName.text = user.name.replace(" ", "\n")
-            Glide.with(this@BottomNavigatorActivity).load(user.image).into(bottomNavigatorBinding.userAvatar)
         }
     }
 

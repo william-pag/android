@@ -1,9 +1,6 @@
 package com.example.pagandroid.dao
 
-import com.example.pagandroid.GetAllUserNameQuery
-import com.example.pagandroid.GetAllUserTitleQuery
-import com.example.pagandroid.LoginMutation
-import com.example.pagandroid.MeQuery
+import com.example.pagandroid.*
 import com.example.pagandroid.controllers.login.GlobalAction
 import com.example.pagandroid.dao.handle.HandleResult
 import com.example.pagandroid.store.myApolloClient
@@ -34,8 +31,8 @@ class User() {
             null
         }
     }
-    suspend fun getAllUserTitle(): GetAllUserTitleQuery.Data? {
-        val result = this.apolloClient.client.query(GetAllUserTitleQuery()).execute()
+    suspend fun getDetailUser(userId: Double): GetOneUserQuery.Data? {
+        val result = this.apolloClient.client.query(GetOneUserQuery(userId)).execute()
         return HandleResult.shared.handleResult(result)
     }
 }

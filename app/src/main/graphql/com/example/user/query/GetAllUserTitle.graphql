@@ -1,9 +1,0 @@
-query GetAllUserTitle {
-    getAllUsers {
-        id
-        name
-        title {
-            name
-        }
-    }
-}

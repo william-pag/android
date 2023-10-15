@@ -9,9 +9,10 @@ class UserLogin (
     val name: String,
     val email: String,
     val cycleId: Double?,
-    val image: String?
+    val image: String?,
+    var userId: Double
 ) {
     override fun toString(): String {
-        return "$id $name $email $cycleId $image"
+        return "$id $name $email $cycleId $image $userId"
     }
 }
