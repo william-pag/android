@@ -2,7 +2,7 @@ package com.example.pagandroid.activities.home.bottom_fragment.deadline
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.example.pagandroid.activities.home.bottom_fragment.adapter.RecycleViewAdapter
+import com.example.pagandroid.activities.adapter.RecycleViewAdapter
 import com.example.pagandroid.databinding.ItemDeadlineBinding
 import com.example.pagandroid.model.deadline.DeadlineModel
 

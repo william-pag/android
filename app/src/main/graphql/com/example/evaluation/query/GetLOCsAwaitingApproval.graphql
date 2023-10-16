@@ -1,0 +1,18 @@
+query GetLOCsAwaitingApproval {
+    getLOCsAwaitingApproval {
+        percentComplete
+        total
+        complete
+        users {
+            id
+            name
+            image
+            cycleContributors {
+                status
+            }
+            department {
+                deadlineConfirmLOC
+            }
+        }
+    }
+}

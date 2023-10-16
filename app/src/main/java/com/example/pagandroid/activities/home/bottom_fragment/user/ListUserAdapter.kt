@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.pagandroid.GetAllUserNameQuery
-import com.example.pagandroid.activities.home.bottom_fragment.adapter.RecycleViewAdapter
+import com.example.pagandroid.activities.adapter.RecycleViewAdapter
 import com.example.pagandroid.databinding.ItemUserBinding
 
 class ListUserAdapter(

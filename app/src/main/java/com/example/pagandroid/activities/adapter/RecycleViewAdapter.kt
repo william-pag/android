@@ -1,4 +1,4 @@
-package com.example.pagandroid.activities.home.bottom_fragment.adapter
+package com.example.pagandroid.activities.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

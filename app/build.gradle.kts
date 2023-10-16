@@ -46,7 +46,9 @@ android {
                     "src/main/res/layouts/activities/home",
                     "src/main/res/layouts/fragment/items",
                     "src/main/res/layouts/drawer",
-                    "src/main/res/layouts/drawer/layout"
+                    "src/main/res/layouts/drawer/layout",
+                    "src/main/res/layouts/activities/evaluation",
+                    "src/main/res/layouts/fragment/evaluation",
                 )
             }
         }

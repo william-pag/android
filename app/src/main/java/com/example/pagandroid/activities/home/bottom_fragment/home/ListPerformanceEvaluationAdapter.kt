@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.pagandroid.GetListPerformanceEvaluationQuery
-import com.example.pagandroid.activities.home.bottom_fragment.adapter.RecycleViewAdapter
+import com.example.pagandroid.activities.adapter.RecycleViewAdapter
 import com.example.pagandroid.databinding.ItemPerformanceEvaluationBinding
 import kotlin.math.roundToInt
 

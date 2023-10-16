@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import com.example.pagandroid.GetAllReminderQuery
-import com.example.pagandroid.activities.home.bottom_fragment.adapter.RecycleViewAdapter
+import com.example.pagandroid.activities.adapter.RecycleViewAdapter
 import com.example.pagandroid.databinding.ItemReminderBinding
 import com.example.pagandroid.helpers.Datetime
 
@@ -16,7 +16,7 @@ class ListReminderAdapter(
 ): RecycleViewAdapter<
         GetAllReminderQuery.GetAllNotificationLog,
         ItemReminderBinding
->(listReminder, viewBindingFactory) {
+        >(listReminder, viewBindingFactory) {
     override fun bind(
         binding: ItemReminderBinding,
         item: GetAllReminderQuery.GetAllNotificationLog
