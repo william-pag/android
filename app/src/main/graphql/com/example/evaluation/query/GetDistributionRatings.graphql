@@ -1,0 +1,13 @@
+query GetDistributionRatings($typeId: Float, $questionId: Float) {
+    getDistributionRatings(evaluationType: $typeId, question: $questionId) {
+        total
+        mean
+        stdDev
+        ratings {
+            score
+            entries
+            normalize
+            percentage
+        }
+    }
+}

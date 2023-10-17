@@ -1,0 +1,12 @@
+query GetAllEvaluationTypes {
+    getAllEvaluationTypes {
+        id
+        name
+        evaluationTypeQuestions {
+            id
+            title
+            isEvaluation
+            isOpenQuestion
+        }
+    }
+}

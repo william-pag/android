@@ -10,21 +10,15 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo3.api.Optional
-import com.example.pagandroid.GetAllUserNameQuery
 import com.example.pagandroid.R
-import com.example.pagandroid.activities.home.bottom_fragment.dropdown.DropdownEvaluationAdapter
+import com.example.pagandroid.activities.adapter.DropdownEvaluationAdapter
 import com.example.pagandroid.activities.home.bottom_fragment.dropdown.IGetUser
-import com.example.pagandroid.activities.home.bottom_fragment.home.ListPerformanceEvaluationAdapter
-import com.example.pagandroid.dao.Overview
 import com.example.pagandroid.dao.Reminder
-import com.example.pagandroid.dao.User
 import com.example.pagandroid.databinding.FragmentReminderBinding
 import com.example.pagandroid.databinding.ItemReminderBinding
-import com.example.pagandroid.databinding.ItemUserBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * A simple [Fragment] subclass.

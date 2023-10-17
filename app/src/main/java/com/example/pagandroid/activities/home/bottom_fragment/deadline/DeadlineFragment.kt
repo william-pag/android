@@ -11,15 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo3.api.Optional
 import com.example.pagandroid.R
-import com.example.pagandroid.activities.home.bottom_fragment.dropdown.DropdownEvaluationAdapter
+import com.example.pagandroid.activities.adapter.DropdownEvaluationAdapter
 import com.example.pagandroid.activities.home.bottom_fragment.dropdown.IGetDepartment
 import com.example.pagandroid.activities.home.bottom_fragment.dropdown.IGetStrategy
-import com.example.pagandroid.dao.Deadline
 import com.example.pagandroid.databinding.FragmentDeadlineBinding
 import com.example.pagandroid.databinding.ItemDeadlineBinding
-import com.example.pagandroid.helpers.Datetime
-import com.example.pagandroid.model.deadline.DeadlineModel
-import com.example.pagandroid.model.deadline.DeadlineTypes
 import com.example.pagandroid.service.deadline.DeadlineService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

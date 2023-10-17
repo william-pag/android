@@ -1,4 +1,4 @@
-package com.example.pagandroid.activities.home.bottom_fragment.dropdown
+package com.example.pagandroid.activities.adapter
 
 import android.content.Context
 import android.graphics.Color
@@ -11,6 +11,9 @@ import com.example.pagandroid.GetAllStrategiesQuery
 import com.example.pagandroid.GetAllUserNameQuery
 import com.example.pagandroid.databinding.ItemEvaluationDropdownBinding
 import com.example.pagandroid.databinding.ItemEvaluationDropdownSelectedBinding
+import com.example.pagandroid.model.evaluation.EvaluationTypeAndQuestions
+import com.example.pagandroid.model.evaluation.Question
+
 class DropdownEvaluationAdapter<T>(
     private val context: Context,
     resource: Int,
@@ -33,6 +36,10 @@ class DropdownEvaluationAdapter<T>(
             dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result.name
         } else if (result is GetAllUserNameQuery.GetAllUser) {
             dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result.name
+        } else if (result is EvaluationTypeAndQuestions) {
+            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result.name
+        } else if (result is Question) {
+            dropdownSelectedBinding.tvSelectEvaluationDropdown.text = result.title
         }
         return row
     }
@@ -54,6 +61,10 @@ class DropdownEvaluationAdapter<T>(
             dropdownBinding.tvTitleDropdown.text = result.name
         } else if (result is GetAllUserNameQuery.GetAllUser) {
             dropdownBinding.tvTitleDropdown.text = result.name
+        } else if (result is EvaluationTypeAndQuestions) {
+            dropdownBinding.tvTitleDropdown.text = result.name
+        } else if (result is Question) {
+            dropdownBinding.tvTitleDropdown.text = result.title
         }
         if (position == 0) {
             dropdownBinding.tvTitleDropdown.setTextColor(Color.GRAY)

@@ -2,11 +2,13 @@ package com.example.pagandroid.service.LOCsWaitApproval
 
 import com.example.pagandroid.dao.Evaluation
 import com.example.pagandroid.helpers.Datetime
+import com.example.pagandroid.model.LOCsWaitApproval.EvaluationTypeAndQuestion
 import com.example.pagandroid.model.LOCsWaitApproval.Header
 import com.example.pagandroid.model.LOCsWaitApproval.ILOCsWaitApproval
 import com.example.pagandroid.model.LOCsWaitApproval.Percentage
 import com.example.pagandroid.model.LOCsWaitApproval.UserLOCsWaitApproval
 import com.example.pagandroid.model.LOCsWaitApproval.UserWaitApproval
+import com.example.pagandroid.service.evaluation.EvaluationTypeService
 
 class LOCsWaitApprovalService {
     companion object {
@@ -18,12 +20,13 @@ class LOCsWaitApprovalService {
         val result = Evaluation.shard.getLOCsAwaitingApproval()
         if (result?.getLOCsAwaitingApproval != null){
             val data = result.getLOCsAwaitingApproval
-            val header  =Header(title = "List Of Contributors Awaiting Approval")
-            val percent = Percentage(
+
+            listLOC.add(Header(title = "List Of Contributors Awaiting Approval"))
+            listLOC.add(Percentage(
                 complete = data.complete.toInt(),
                 total = data.total.toInt(),
                 percent = data.percentComplete.toInt()
-            )
+            ))
             val users = mutableListOf<UserLOCsWaitApproval>()
             val mapStatus = mapOf<String, String>(
                 "approved" to "Approved",
@@ -43,10 +46,10 @@ class LOCsWaitApprovalService {
                     }
                 ))
             }
-            listLOC.add(0, header)
-            listLOC.add(1, percent)
-            listLOC.add(2, UserWaitApproval(users))
+            listLOC.add(UserWaitApproval(users))
         }
+        listLOC.add(Header(title = "Distribution of your ratings on evaluates for this cycle"))
+        listLOC.add(EvaluationTypeAndQuestion(data = EvaluationTypeService.shared.mapEvaluationType()))
         return listLOC
     }
 }

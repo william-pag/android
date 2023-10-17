@@ -20,6 +20,17 @@
             android:textColor="#302F2F"
             android:textSize="20sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_sticky_header"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E4F6CF"
+            android:paddingVertical="10dp"
+            android:textAlignment="center"
+            android:textColor="#302F2F"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:padding="10dp"
