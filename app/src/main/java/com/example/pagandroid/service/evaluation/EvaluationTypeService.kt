@@ -1,10 +1,12 @@
 package com.example.pagandroid.service.evaluation
 
 import com.apollographql.apollo3.api.Optional
+import com.example.pagandroid.GetDistributionRatingsQuery
 import com.example.pagandroid.dao.Evaluation
 import com.example.pagandroid.helpers.OptionalValue
 import com.example.pagandroid.model.evaluation.EvaluationTypeAndQuestions
 import com.example.pagandroid.model.evaluation.Question
+import com.example.pagandroid.model.evaluation.Rating
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 
@@ -20,7 +22,7 @@ class EvaluationTypeService {
                 name = "All",
                 mutableListOf(Question(
                     id = 0,
-                    title = "Alll"
+                    title = "All"
                 ))
             )
         )
@@ -53,12 +55,27 @@ class EvaluationTypeService {
         return evalTypeQuestion
     }
 
-    suspend fun mapDataBarChart(typeId: Int, questionId: Int): MutableList<BarEntry> {
+    suspend fun mapDataBarChart(typeId: Int, questionId: Int): Pair<List<GetDistributionRatingsQuery.Rating>?, Rating> {
         val type = OptionalValue.shared.mapOptional(typeId)
         val question = OptionalValue.shared.mapOptional(questionId)
-        val entries = mutableListOf<BarEntry>()
         val data = Evaluation.shard.getDistributionRatings(type, question)
-        data?.getDistributionRatings?.ratings?.forEach { rating ->
+        val rating = Rating(
+            median = data?.getDistributionRatings?.mean ?: 0.0,
+            strDev = data?.getDistributionRatings?.stdDev ?: 0.0,
+            nrmRating = data?.getDistributionRatings?.total ?: 0.0,
+            nomalize = data?.getDistributionRatings?.ratings?.map { rating ->
+                rating.normalize
+            }
+        )
+
+        return Pair(data?.getDistributionRatings?.ratings, rating)
+    }
+
+    fun mapEntries(ratings: List<GetDistributionRatingsQuery.Rating>?): Pair<MutableList<BarEntry>, Int> {
+        var total = 0
+        val entries = mutableListOf<BarEntry>()
+        ratings?.forEach { rating ->
+            total += rating.entries.toInt()
             entries.add(
                 BarEntry(
                     if (rating.score != null) {
@@ -70,6 +87,7 @@ class EvaluationTypeService {
                 )
             )
         }
-        return entries
+
+        return Pair(entries, total)
     }
 }

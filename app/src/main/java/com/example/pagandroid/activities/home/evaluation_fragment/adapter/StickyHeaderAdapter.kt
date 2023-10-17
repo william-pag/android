@@ -1,16 +1,25 @@
 package com.example.pagandroid.activities.home.evaluation_fragment.adapter
 
 import android.annotation.SuppressLint
+import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
+import android.util.AttributeSet
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.TableRow
+import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.view.marginBottom
+import androidx.core.view.marginLeft
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pagandroid.R
@@ -202,13 +211,59 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
         binding.spinnerQuestion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val entries = EvaluationTypeService.shared.mapDataBarChart(typeId, questions[p2].id)
+                    val data = EvaluationTypeService.shared.mapDataBarChart(typeId, questions[p2].id)
                     CoroutineScope(Dispatchers.Main).launch {
+                        val (ratings, summary) = data
+                        val (entries, total) = EvaluationTypeService.shared.mapEntries(ratings)
+
                         val dataSet = BarDataSet(entries, "Ratings")
                         val barData = BarData(dataSet)
                         binding.chartStatisticQuestion.data = barData
                         binding.chartStatisticQuestion.description.isEnabled = false
                         binding.chartStatisticQuestion.invalidate()
+                        val context = binding.root.context
+                        for (i in 0..7) {
+                            val tableRow = TableRow(context)
+                            for (k in 0..5) {
+                                when (k) {
+                                    0 -> {
+                                        val textView = createTextView(context, "${ratings?.get(k)?.score?.toInt()}", true)
+                                        tableRow.addView(textView)
+                                    }
+                                    1-> {
+                                        val textView = createTextView(context, "${ratings?.get(k)?.entries}")
+                                        tableRow.addView(textView)
+                                    }
+                                    2 -> {
+                                        val textView = createTextView(context, "${(ratings?.get(k)?.score?.toInt()
+                                            ?.div(total))}%")
+                                        tableRow.addView(textView)
+                                    }
+                                    3 -> {
+                                        var textView = createTextView(context)
+                                        if (i == 0) {
+                                            textView = createTextView(context, "${summary.median}")
+                                        }
+                                        tableRow.addView(textView)
+                                    }
+                                    4 -> {
+                                        var textView = createTextView(context)
+                                        if (i == 0) {
+                                            textView = createTextView(context, "${summary.strDev}")
+                                        }
+                                        tableRow.addView(textView)
+                                    }
+                                    5 -> {
+                                        var textView = createTextView(context)
+                                        if (i in 1..5) {
+                                            textView = createTextView(context, "${summary.nomalize?.get(i)}")
+                                        }
+                                        tableRow.addView(textView)
+                                    }
+                                }
+                            }
+                            binding.tableStatistic.addView(tableRow)
+                        }
                     }
                 }
             }
@@ -217,5 +272,14 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
                 Log.d("EvaluationAdapter", "NothingSelected")
             }
         }
+    }
+    private fun createTextView(context: Context, text: String = "", isBold: Boolean = false): TextView {
+        val textView = TextView(context)
+        textView.gravity = Gravity.CENTER
+        if (isBold) {
+            textView.setTypeface(null, Typeface.BOLD)
+        }
+        textView.text = text
+        return textView
     }
 }
