@@ -1,12 +1,11 @@
 package com.example.pagandroid.activities.home.evaluation_fragment.adapter
 
 import android.annotation.SuppressLint
-import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
-import android.util.AttributeSet
+import android.text.Layout.Alignment
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -14,12 +13,10 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.view.marginBottom
-import androidx.core.view.marginLeft
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pagandroid.R
@@ -38,19 +35,15 @@ import com.example.pagandroid.model.evaluation.Question
 import com.example.pagandroid.service.evaluation.EvaluationTypeService
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Optional
 
 class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
     RecyclerView.Adapter<StickyHeaderAdapter.Companion.BaseViewHolder<*>>() {
-
     inner class HeaderViewHolder(val binding: ItemHeaderContributorBinding) :
         BaseViewHolder<ItemHeaderContributorBinding>(binding.root)
 
@@ -59,6 +52,7 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
 
     inner class SecondViewHolder(val binding: RcvListStatusContributorBinding) :
         BaseViewHolder<RcvListStatusContributorBinding>(binding.root)
+
     inner class ThirdViewHolder(val binding: StatisticEvaluationQuestionBinding) :
         BaseViewHolder<StatisticEvaluationQuestionBinding>(binding.root)
 
@@ -116,6 +110,7 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
             is HeaderViewHolder -> {
                 holder.binding.tvHeaderContributor.text = (list[position] as Header).title
             }
+
             is FirstViewHolder -> {
                 val data = list[position] as Percentage
                 holder.binding.tvPercentStatus.text = "Status ${data.percent}% Completed"
@@ -131,17 +126,22 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
                 holder.binding.chartWaitingApproval.setDrawEntryLabels(false)
                 holder.binding.chartWaitingApproval.description.isEnabled = false
                 holder.binding.chartWaitingApproval.data = PieData(pieDataSet)
-                holder.binding.chartWaitingApproval.holeRadius = (holder.binding.chartWaitingApproval.width * 0.15).toFloat()
+                holder.binding.chartWaitingApproval.holeRadius =
+                    (holder.binding.chartWaitingApproval.width * 0.15).toFloat()
                 holder.binding.chartWaitingApproval.centerText = "${data.percent}%"
                 holder.binding.chartWaitingApproval.invalidate()
             }
+
             is SecondViewHolder -> {
-                val adapter = UserStatusAdapter((list[position] as UserWaitApproval).users) { inflater, viewGroup, attachToRoot ->
-                    ItemContributorStatusBinding.inflate(inflater, viewGroup, attachToRoot)
-                }
-                holder.binding.rcvListContributorStatus.layoutManager = LinearLayoutManager(holder.binding.root.context)
+                val adapter =
+                    UserStatusAdapter((list[position] as UserWaitApproval).users) { inflater, viewGroup, attachToRoot ->
+                        ItemContributorStatusBinding.inflate(inflater, viewGroup, attachToRoot)
+                    }
+                holder.binding.rcvListContributorStatus.layoutManager =
+                    LinearLayoutManager(holder.binding.root.context)
                 holder.binding.rcvListContributorStatus.adapter = adapter
-                holder.binding.rcvListContributorStatus.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+                holder.binding.rcvListContributorStatus.addOnItemTouchListener(object :
+                    RecyclerView.OnItemTouchListener {
                     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
                         var initialTouchY = 0F;
                         val action = e.action
@@ -152,6 +152,7 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
                                 initialTouchY = y
                                 rv.parent.requestDisallowInterceptTouchEvent(true)
                             }
+
                             MotionEvent.ACTION_MOVE -> {
                                 val dy = y - initialTouchY
                                 if (rv.canScrollVertically(-1) && dy > 0 || rv.canScrollVertically(1) && dy < 0) {
@@ -165,9 +166,10 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
 
                     override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
 
-                    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) { }
+                    override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
                 })
             }
+
             is ThirdViewHolder -> {
                 CoroutineScope(Dispatchers.Main).launch {
                     val data = (list[position] as EvaluationTypeAndQuestion).data
@@ -177,22 +179,33 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
                         data
                     )
                     holder.binding.spinnerForm.adapter = dropdownEvaluationAdapter
-                    holder.binding.spinnerForm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                            setSpinnerQuestion(holder.binding.root.context, data[p2].id, data[p2].questions, holder.binding)
-                        }
+                    holder.binding.spinnerForm.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ) {
+                                setSpinnerQuestion(
+                                    holder.binding.root.context,
+                                    data[p2].id,
+                                    data[p2].questions,
+                                    holder.binding
+                                )
+                            }
 
-                        override fun onNothingSelected(p0: AdapterView<*>?) {
-                            Log.d("EvaluationAdapter", "NothingSelected")
+                            override fun onNothingSelected(p0: AdapterView<*>?) {
+                                Log.d("EvaluationAdapter", "NothingSelected")
+                            }
                         }
-                    }
                 }
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(list[position]) {
+        return when (list[position]) {
             is Header -> ViewType.Header.ordinal
             is Percentage -> ViewType.FirstContent.ordinal
             is UserWaitApproval -> ViewType.SecondContent.ordinal
@@ -201,85 +214,110 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
         }
     }
 
-    private fun setSpinnerQuestion(context: Context, typeId: Int, questions: MutableList<Question>, binding:  StatisticEvaluationQuestionBinding) {
+    private fun setSpinnerQuestion(
+        context: Context,
+        typeId: Int,
+        questions: MutableList<Question>,
+        binding: StatisticEvaluationQuestionBinding
+    ) {
         val dropdownEvaluationAdapter = DropdownEvaluationAdapter(
             context,
             R.layout.item_evaluation_dropdown_selected,
             questions
         )
         binding.spinnerQuestion.adapter = dropdownEvaluationAdapter
-        binding.spinnerQuestion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val data = EvaluationTypeService.shared.mapDataBarChart(typeId, questions[p2].id)
-                    CoroutineScope(Dispatchers.Main).launch {
-                        val (ratings, summary) = data
-                        val (entries, total) = EvaluationTypeService.shared.mapEntries(ratings)
+        binding.spinnerQuestion.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val data =
+                            EvaluationTypeService.shared.mapDataBarChart(typeId, questions[p2].id)
+                        CoroutineScope(Dispatchers.Main).launch {
+                            val (ratings, summary) = data
+                            val (entries, total) = EvaluationTypeService.shared.mapEntries(ratings)
 
-                        val dataSet = BarDataSet(entries, "Ratings")
-                        val barData = BarData(dataSet)
-                        binding.chartStatisticQuestion.data = barData
-                        binding.chartStatisticQuestion.description.isEnabled = false
-                        binding.chartStatisticQuestion.invalidate()
-                        val context = binding.root.context
-                        for (i in 0..7) {
-                            val tableRow = TableRow(context)
-                            for (k in 0..5) {
-                                when (k) {
-                                    0 -> {
-                                        val textView = createTextView(context, "${ratings?.get(k)?.score?.toInt()}", true)
-                                        tableRow.addView(textView)
-                                    }
-                                    1-> {
-                                        val textView = createTextView(context, "${ratings?.get(k)?.entries}")
-                                        tableRow.addView(textView)
-                                    }
-                                    2 -> {
-                                        val textView = createTextView(context, "${(ratings?.get(k)?.score?.toInt()
-                                            ?.div(total))}%")
-                                        tableRow.addView(textView)
-                                    }
-                                    3 -> {
-                                        var textView = createTextView(context)
-                                        if (i == 0) {
-                                            textView = createTextView(context, "${summary.median}")
+                            val dataSet = BarDataSet(entries, "Ratings")
+                            val barData = BarData(dataSet)
+                            binding.chartStatisticQuestion.data = barData
+                            binding.chartStatisticQuestion.description.isEnabled = false
+                            binding.chartStatisticQuestion.invalidate()
+                            val context = binding.root.context
+                            for (k in 0..6) {
+                                val tableRow = TableRow(context)
+                                if (k < 6) {
+                                    val rating = ratings?.get(k) ?: return@launch
+                                    tableRow.addView(createTextView(
+                                        context,
+                                        "${rating.score?.toInt()}",
+                                        true
+                                    ))
+                                    tableRow.addView(createTextView(
+                                        context,
+                                        "${rating.entries.toInt()}"
+                                    ))
+                                    tableRow.addView(createTextView(
+                                        context, "${
+                                            rating.percentage
+                                        }%"
+                                    ))
+                                    when (k) {
+                                        0 -> {
+                                            tableRow.addView(createTextView(context, "${summary.median}"))
+                                            tableRow.addView(createTextView(context, "${summary.strDev}"))
                                         }
-                                        tableRow.addView(textView)
-                                    }
-                                    4 -> {
-                                        var textView = createTextView(context)
-                                        if (i == 0) {
-                                            textView = createTextView(context, "${summary.strDev}")
+                                        else -> {
+                                            tableRow.addView(createTextView(context))
+                                            tableRow.addView(createTextView(context))
                                         }
-                                        tableRow.addView(textView)
                                     }
-                                    5 -> {
-                                        var textView = createTextView(context)
-                                        if (i in 1..5) {
-                                            textView = createTextView(context, "${summary.nomalize?.get(i)}")
-                                        }
-                                        tableRow.addView(textView)
+                                    if (k in 1..5) {
+                                        tableRow.addView(createTextView(
+                                            context,
+                                            "${summary.nomalize?.get(k)}"
+                                        ))
+                                    } else {
+                                        tableRow.addView(createTextView(context))
                                     }
+                                } else {
+                                    tableRow.addView(createTextView(context, "Total", true))
+                                    tableRow.addView(createTextView(context, "$total"))
+                                    tableRow.addView(createTextView(context, "100%"))
+                                    tableRow.addView(createTextView(context))
+                                    tableRow.addView(createTextView(context))
+                                    tableRow.addView(createTextView(context))
                                 }
+
+                                binding.tableStatistic.addView(tableRow)
                             }
-                            binding.tableStatistic.addView(tableRow)
                         }
                     }
                 }
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    Log.d("EvaluationAdapter", "NothingSelected")
+                }
             }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                Log.d("EvaluationAdapter", "NothingSelected")
-            }
-        }
     }
-    private fun createTextView(context: Context, text: String = "", isBold: Boolean = false): TextView {
+
+    private fun createTextView(
+        context: Context,
+        text: String = "",
+        isBold: Boolean = false
+    ): TextView {
         val textView = TextView(context)
         textView.gravity = Gravity.CENTER
+        textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
         if (isBold) {
             textView.setTypeface(null, Typeface.BOLD)
         }
         textView.text = text
+        val params = TableRow.LayoutParams(
+            TableRow.LayoutParams.WRAP_CONTENT,
+            TableRow.LayoutParams.WRAP_CONTENT,
+            1f
+        )
+        params.bottomMargin = 30
+        textView.layoutParams = params
         return textView
     }
+
 }
