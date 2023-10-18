@@ -58,4 +58,9 @@ class Overview {
         val result = this.apolloClient.client.query(GetListPerformanceEvaluationQuery()).execute()
         return HandleResult.shared.handleResult(result)
     }
+
+    suspend fun getListUserAction(page: Double = 1.0, name: Optional<String?> = Optional.Absent): GetListUserActionQuery.Data? {
+        val result = this.apolloClient.client.query(GetListUserActionQuery(page, name)).execute()
+        return HandleResult.shared.handleResult(result)
+    }
 }

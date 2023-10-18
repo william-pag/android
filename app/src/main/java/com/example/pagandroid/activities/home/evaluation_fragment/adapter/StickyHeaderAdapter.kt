@@ -242,6 +242,23 @@ class StickyHeaderAdapter(private val list: List<ILOCsWaitApproval>) :
                             binding.chartStatisticQuestion.description.isEnabled = false
                             binding.chartStatisticQuestion.invalidate()
                             val context = binding.root.context
+                            binding.tableStatistic.removeAllViews()
+                            if (binding.tableStatistic.childCount == 0) {
+                                val tableRow = TableRow(context)
+                                for (i in 0..5) {
+                                    val text = when (i) {
+                                        0 -> "Rating"
+                                        1 -> "# Entries"
+                                        2 -> "% of Total"
+                                        3 -> "Median"
+                                        4 -> "Std Dev"
+                                        5 -> "Nrm Rating"
+                                        else -> ""
+                                    }
+                                    tableRow.addView(createTextView(context, text, true))
+                                }
+                                binding.tableStatistic.addView(tableRow)
+                            }
                             for (k in 0..6) {
                                 val tableRow = TableRow(context)
                                 if (k < 6) {

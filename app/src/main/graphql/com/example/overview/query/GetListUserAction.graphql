@@ -1,0 +1,77 @@
+query GetListUserAction($page: Float!, $name: String) {
+    getListUserAction(page: $page, name: $name) {
+        page
+        total
+        pageSize
+        data {
+            user {
+                id
+                name
+                startDate
+                title {
+                    id
+                    name
+                }
+                department {
+                    id
+                    name
+                }
+                location {
+                    id
+                    name
+                }
+                evaluator {
+                    id
+                    name
+                }
+                strategy {
+                    id
+                    name
+                }
+                evaluationType {
+                    id
+                    name
+                }
+            }
+            listOfContributors {
+                id
+                status
+            }
+            selfAssessment {
+                id
+                status
+            }
+            evaluationsFor {
+                percentComplete
+                evaluations {
+                    id
+                    status
+                    contributor {
+                        id
+                        name
+                    }
+                }
+            }
+            evaluationsBy {
+                percentComplete
+                evaluations {
+                    id
+                    status
+                    evaluatee {
+                        id
+                        name
+                    }
+                }
+            }
+            performanceSummary {
+                id
+                isComplete
+            }
+            overallPerformanceSummary {
+                id
+                isShare
+                sharedDate
+            }
+        }
+    }
+}
