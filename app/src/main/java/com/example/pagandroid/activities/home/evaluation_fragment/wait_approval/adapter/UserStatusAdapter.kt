@@ -1,4 +1,4 @@
-package com.example.pagandroid.activities.home.evaluation_fragment.adapter
+package com.example.pagandroid.activities.home.evaluation_fragment.wait_approval.adapter
 
 import android.text.SpannableString
 import android.text.style.UnderlineSpan

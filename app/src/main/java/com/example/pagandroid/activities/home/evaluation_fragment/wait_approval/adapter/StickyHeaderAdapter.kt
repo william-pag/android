@@ -1,11 +1,10 @@
-package com.example.pagandroid.activities.home.evaluation_fragment.adapter
+package com.example.pagandroid.activities.home.evaluation_fragment.wait_approval.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
-import android.text.Layout.Alignment
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -13,7 +12,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.annotation.RequiresApi

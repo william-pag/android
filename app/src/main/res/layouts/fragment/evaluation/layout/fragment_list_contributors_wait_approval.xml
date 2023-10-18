@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.home.evaluation_fragment.ListContributorsWaitApprovalFragment">
+    tools:context=".activities.home.evaluation_fragment.wait_approval.ListContributorsWaitApprovalFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

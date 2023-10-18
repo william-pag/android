@@ -1,7 +1,6 @@
-package com.example.pagandroid.activities.home.evaluation_fragment
+package com.example.pagandroid.activities.home.evaluation_fragment.wait_approval
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pagandroid.activities.home.evaluation_fragment.adapter.StickyHeaderAdapter
+import com.example.pagandroid.activities.home.evaluation_fragment.wait_approval.adapter.StickyHeaderAdapter
 import com.example.pagandroid.databinding.FragmentListContributorsWaitApprovalBinding
 import com.example.pagandroid.model.LOCsWaitApproval.Header
 import com.example.pagandroid.model.LOCsWaitApproval.ILOCsWaitApproval
@@ -43,11 +42,13 @@ class ListContributorsWaitApprovalFragment : Fragment() {
                         DividerItemDecoration.VERTICAL
                     )
                 )
-                binding.rcvContainerListContributor.addOnScrollListener(RcvStickyScroll(
+                binding.rcvContainerListContributor.addOnScrollListener(
+                    RcvStickyScroll(
                     data,
                     binding.tvStickyHeader,
                     manager
-                ))
+                )
+                )
                 binding.tvStickyHeader.text = (data[0] as Header).title
             }
         }

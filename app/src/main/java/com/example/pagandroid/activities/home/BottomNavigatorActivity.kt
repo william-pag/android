@@ -1,7 +1,6 @@
 package com.example.pagandroid.activities.home
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -13,7 +12,7 @@ import com.example.pagandroid.activities.home.bottom_fragment.home.HomeFragment
 import com.example.pagandroid.activities.home.bottom_fragment.reminder.ReminderFragment
 import com.example.pagandroid.activities.home.bottom_fragment.user.InfoUserDialog
 import com.example.pagandroid.activities.home.bottom_fragment.user.UserFragment
-import com.example.pagandroid.activities.home.evaluation_fragment.ListContributorsWaitApprovalFragment
+import com.example.pagandroid.activities.home.evaluation_fragment.user_action.UserActionFragment
 import com.example.pagandroid.databinding.ActivityBottomNavigatorBinding
 import com.example.pagandroid.room.RoomController
 import com.google.android.material.navigation.NavigationView
@@ -38,7 +37,7 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
         }
         // Navigate to the Home fragment by default
         supportFragmentManager.beginTransaction()
-            .replace(R.id.content_frame, ListContributorsWaitApprovalFragment())
+            .replace(R.id.content_frame, UserActionFragment())
             .commit()
         bottomNavigatorBinding.imgLogo.setOnClickListener {
             drawer.open()

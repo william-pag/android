@@ -59,8 +59,8 @@ class Overview {
         return HandleResult.shared.handleResult(result)
     }
 
-    suspend fun getListUserAction(page: Double = 1.0, name: Optional<String?> = Optional.Absent): GetListUserActionQuery.Data? {
-        val result = this.apolloClient.client.query(GetListUserActionQuery(page, name)).execute()
+    suspend fun getUserAction(name: String): GetListUserActionQuery.Data? {
+        val result = this.apolloClient.client.query(GetListUserActionQuery(1.0, name)).execute()
         return HandleResult.shared.handleResult(result)
     }
 }
