@@ -34,4 +34,7 @@ class OverviewService {
             this.status[status] ?: "In Progress"
         }
     }
+    fun mapDoubleTwoDigit(number: Double? = 0.0): String {
+        return String.format("%.2f", number)
+    }
 }
