@@ -87,6 +87,9 @@ dependencies {
 
     // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // Redis
+    implementation("redis.clients:jedis:5.0.2")
 }
 apollo {
     service("pagandroid") {

@@ -2,6 +2,7 @@ package com.example.pagandroid.activities.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ import com.example.pagandroid.activities.home.bottom_fragment.reminder.ReminderF
 import com.example.pagandroid.activities.home.bottom_fragment.user.InfoUserDialog
 import com.example.pagandroid.activities.home.bottom_fragment.user.UserFragment
 import com.example.pagandroid.activities.home.evaluation_fragment.user_action.UserActionFragment
+import com.example.pagandroid.dao.redis.RedisClient
+import com.example.pagandroid.dao.redis.RedisPubSub
 import com.example.pagandroid.databinding.ActivityBottomNavigatorBinding
 import com.example.pagandroid.room.RoomController
 import com.google.android.material.navigation.NavigationView
@@ -97,5 +100,11 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
         val badgeView = this.bottomNavigatorBinding.bottomNavigation.getOrCreateBadge(resourceId)
         badgeView.number = num
         badgeView.isVisible = isShow
+    }
+
+    private fun getNotification() {
+        RedisClient.shared.subscribe("FIRST-CHANNEL", RedisPubSub { message ->
+            Log.d("RedisClient", message)
+        })
     }
 }
