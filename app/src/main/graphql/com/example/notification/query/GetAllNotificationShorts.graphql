@@ -1,0 +1,7 @@
+query GetAllNotificationShorts {
+    getAllNotificationShorts {
+        id
+        subject
+        updatedAt
+    }
+}

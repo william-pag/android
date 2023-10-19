@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.pagandroid.R
 import com.example.pagandroid.activities.home.bottom_fragment.deadline.DeadlineFragment
 import com.example.pagandroid.activities.home.bottom_fragment.home.HomeFragment
+import com.example.pagandroid.activities.home.bottom_fragment.notification.NotificationFragment
 import com.example.pagandroid.activities.home.bottom_fragment.reminder.ReminderFragment
 import com.example.pagandroid.activities.home.bottom_fragment.user.InfoUserDialog
 import com.example.pagandroid.activities.home.bottom_fragment.user.UserFragment
@@ -37,7 +38,7 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
         }
         // Navigate to the Home fragment by default
         supportFragmentManager.beginTransaction()
-            .replace(R.id.content_frame, UserActionFragment())
+            .replace(R.id.content_frame, NotificationFragment())
             .commit()
         bottomNavigatorBinding.imgLogo.setOnClickListener {
             drawer.open()

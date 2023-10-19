@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-        xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home"
-            android:title="Overview"/>
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Overview" />
 
     <item
-            android:id="@+id/nav_deadline"
-            android:icon="@drawable/ic_deadline"
-            android:title="Deadlines"/>
+        android:id="@+id/nav_deadline"
+        android:icon="@drawable/ic_deadline"
+        android:title="Deadlines" />
     <item
-            android:id="@+id/nav_reminder"
-            android:icon="@drawable/ic_reminder"
-            android:title="Reminders"/>
+        android:id="@+id/nav_reminder"
+        android:icon="@drawable/ic_calendar"
+        android:title="Reminders" />
     <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_profile"
-            android:title="Profile"/>
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+    <item
+        android:id="@+id/nav_notification"
+        android:icon="@drawable/ic_reminder"
+        android:title="Notification" />
 </menu>
