@@ -23,6 +23,9 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import redis.clients.jedis.Jedis
+import redis.clients.jedis.JedisPool
+import redis.clients.jedis.JedisPubSub
 
 class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var bottomNavigatorBinding: ActivityBottomNavigatorBinding
@@ -100,11 +103,5 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
         val badgeView = this.bottomNavigatorBinding.bottomNavigation.getOrCreateBadge(resourceId)
         badgeView.number = num
         badgeView.isVisible = isShow
-    }
-
-    private fun getNotification() {
-        RedisClient.shared.subscribe("FIRST-CHANNEL", RedisPubSub { message ->
-            Log.d("RedisClient", message)
-        })
     }
 }
