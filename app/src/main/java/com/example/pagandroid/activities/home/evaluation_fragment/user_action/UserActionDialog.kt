@@ -49,12 +49,12 @@ class UserActionDialog(
         CoroutineScope(Dispatchers.Main).launch {
             Glide.with(context).load(user.image).into(binding.imgAvatar)
             binding.tvUsername.text = user.name
-            binding.tvTitle.text = user.title?.name
+            binding.tvTitle.text = user.title?.name ?: ""
             binding.tvStartDate.text = Datetime.shard.formatDateTime(user.startDate.toString())
-            binding.tvLocation.text = user.location?.name
-            binding.tvDepartment.text = user.department?.name
-            binding.tvEvaluator.text = user.evaluator?.name
-            binding.tvForm.text = user.evaluationType?.name
+            binding.tvLocation.text = user.location?.name ?: ""
+            binding.tvDepartment.text = user.department?.name ?: ""
+            binding.tvEvaluator.text = user.evaluator?.name ?: ""
+            binding.tvForm.text = user.evaluationType?.name ?: ""
             binding.tvLoc.text = OverviewService.shared.mapStatus(listOfContributors?.get(0)?.status)
             binding.tvSelfAssessment.text = OverviewService.shared.mapStatus(selfAssessment?.status)
             binding.tvEvaluationFor.text = "${
@@ -75,8 +75,11 @@ class UserActionDialog(
                     ""
                 }
             }"
-            var isCompleted = true
-            isCompleted = if (performanceSummary?.get(0) != null) {
+            val isCompleted = if (
+                performanceSummary?.size != null
+                && performanceSummary.isNotEmpty()
+                && performanceSummary.get(0).isComplete != null
+                ) {
                 performanceSummary[0].isComplete == true
             } else {
                 false
@@ -87,8 +90,11 @@ class UserActionDialog(
                 binding.tvPerfSummary.setTextColor(Color.RED)
                 binding.tvPerfSummary.text = "No"
             }
-            var isShared = true
-            isShared = if (overallPerformanceSummary?.get(0) != null) {
+            val isShared = if (
+                overallPerformanceSummary?.size != null
+                && overallPerformanceSummary.isNotEmpty()
+                && overallPerformanceSummary?.get(0)?.isShare != null
+                ) {
                 overallPerformanceSummary[0].isShare == true
             } else {
                 false

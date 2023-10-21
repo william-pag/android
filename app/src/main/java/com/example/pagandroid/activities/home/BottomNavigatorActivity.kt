@@ -2,7 +2,6 @@ package com.example.pagandroid.activities.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -15,17 +14,14 @@ import com.example.pagandroid.activities.home.bottom_fragment.reminder.ReminderF
 import com.example.pagandroid.activities.home.bottom_fragment.user.InfoUserDialog
 import com.example.pagandroid.activities.home.bottom_fragment.user.UserFragment
 import com.example.pagandroid.activities.home.evaluation_fragment.user_action.UserActionFragment
-import com.example.pagandroid.dao.redis.RedisClient
-import com.example.pagandroid.dao.redis.RedisPubSub
+import com.example.pagandroid.activities.home.evaluation_fragment.wait_approval.ListContributorsWaitApprovalFragment
+import com.example.pagandroid.dao.Notification
 import com.example.pagandroid.databinding.ActivityBottomNavigatorBinding
 import com.example.pagandroid.room.RoomController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import redis.clients.jedis.Jedis
-import redis.clients.jedis.JedisPool
-import redis.clients.jedis.JedisPubSub
 
 class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var bottomNavigatorBinding: ActivityBottomNavigatorBinding
@@ -42,9 +38,28 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
         bottomNavigatorBinding.bottomNavigation.setOnItemSelectedListener { item ->
             onNavigationItemSelected(item)
         }
+
+        bottomNavigatorBinding.frameDrawer.menuAdmin.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame, HomeFragment())
+                .commit()
+            drawer.closeDrawers()
+        }
+        bottomNavigatorBinding.frameDrawer.menuUserAction.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame, UserActionFragment())
+                .commit()
+            drawer.closeDrawers()
+        }
+        bottomNavigatorBinding.frameDrawer.menuWaitApproval.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame, ListContributorsWaitApprovalFragment())
+                .commit()
+            drawer.closeDrawers()
+        }
         // Navigate to the Home fragment by default
         supportFragmentManager.beginTransaction()
-            .replace(R.id.content_frame, NotificationFragment())
+            .replace(R.id.content_frame, HomeFragment())
             .commit()
         bottomNavigatorBinding.imgLogo.setOnClickListener {
             drawer.open()
@@ -63,7 +78,14 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
             }
         }
 
-        setBadgeReminder(5)
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = Notification.shard.getAllNotifications()?.getAllNotificationShorts ?: return@launch
+            if (list.isNotEmpty()) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    setBadgeReminder(list.size, R.id.nav_notification, true)
+                }
+            }
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -92,6 +114,12 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
                     .commit()
                 return true
             }
+            R.id.nav_notification -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, NotificationFragment())
+                    .commit()
+                return true
+            }
             else -> {
                 return false
             }
@@ -99,9 +127,11 @@ class BottomNavigatorActivity : AppCompatActivity(), NavigationView.OnNavigation
     }
 
     @SuppressLint("ResourceType")
-    private fun setBadgeReminder(num: Int, resourceId: Int = R.id.nav_reminder, isShow: Boolean = false) {
+    private fun setBadgeReminder(num: Int, resourceId: Int = R.id.nav_notification, isShow: Boolean = false) {
         val badgeView = this.bottomNavigatorBinding.bottomNavigation.getOrCreateBadge(resourceId)
-        badgeView.number = num
+        if (num < 10) {
+            badgeView.number = num
+        }
         badgeView.isVisible = isShow
     }
 }

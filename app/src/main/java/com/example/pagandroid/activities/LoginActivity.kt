@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.pagandroid.dao.User
 import com.example.pagandroid.databinding.ActivityLoginBinding
 import com.example.pagandroid.room.SharedPreference
-import com.example.pagandroid.service.redis.RedisPubSubService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +21,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.loginBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(this.loginBinding.root)
-        startService(Intent(this@LoginActivity, RedisPubSubService::class.java))
         this.loginBinding.btnLogin.setOnClickListener {
             if (this.canPress) {
                 this.canPress = false

@@ -9,9 +9,9 @@ class Datetime {
     companion object {
         val shard = Datetime()
     }
-    fun formatDateTime(datetime: String, pattern: String = "dd-MM-yyyy"): String {
+    fun formatDateTime(datetime: String?, pattern: String = "dd-MM-yyyy"): String {
         val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        val date: Date = inputDateFormat.parse(datetime) ?: Date()
+        val date: Date = inputDateFormat.parse(datetime ?: Date().toString()) ?: Date()
         val outputDateFormat = SimpleDateFormat(pattern)
         return outputDateFormat.format(date)
     }
