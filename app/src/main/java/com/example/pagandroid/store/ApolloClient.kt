@@ -23,6 +23,7 @@ class MyApolloClient {
             .build()
     }
     fun removeClient() {
+        this._client?.close()
         this._client = null
     }
 }
